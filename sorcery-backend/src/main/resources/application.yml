@@ -1,0 +1,17 @@
+server:
+  port: 8085
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+knife4j:
+  # 是否开启加强模式 true开启  false关闭
+  enable: true
+  setting:
+    # 是否开启调试功能  true开启  false关闭
+    enableDebug: true
+  basic:
+    # 是否开启认证功能  true开启  false关闭
+    enable: false
+    username: test
+    password: 123456
