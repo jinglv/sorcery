@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import JSEncrypt from 'jsencrypt'
 
 const getDefaultState = () => {
   return {
@@ -31,11 +32,15 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
+    const pubKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCQk33iNdA8Iey7J6XrBsidqn6u8EDLWPHsfEUgLQ3qiTikhPKDTzZkpAfU/O0x6NvSKa7Dp0+uqWT3vnW1De0+3u8mCYdVfOdH94VG4xg5U5UrRJei8HhPiXuvKQ+6NBtebCCW5adZ4pBgOiU14cJLhVmm+dYiLo3IDD5LqrlomQIDAQAB'
+    const encrypt = new JSEncrypt()
+    encrypt.setPublicKey(pubKey)
+    const enPassword = encrypt.encrypt(password)
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ userName: username.trim(), password: enPassword }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        commit('SET_TOKEN', data.accessToken)
+        setToken(data.accessToken)
         resolve()
       }).catch(error => {
         reject(error)
@@ -49,13 +54,13 @@ const actions = {
       getInfo(state.token).then(response => {
         const { data } = response
 
-        if (!data) {
-          return reject('Verification failed, please Login again.')
-        }
+        // if (!data) {
+        //   return reject('Verification failed, please Login again.')
+        // }
 
-        const { name, avatar } = data
+        const { userName, avatar } = data
 
-        commit('SET_NAME', name)
+        commit('SET_NAME', userName)
         commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {

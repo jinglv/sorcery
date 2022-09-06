@@ -36,7 +36,27 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    proxy: {
+      '/api': {
+        // 配置到接口包含api使用该代理
+        target: 'http://127.0.0.1:8085/api', // 定义后端的接口
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
+      '/static': {
+        // 配置到接口包含static静态资源使用该代理
+        target: 'http://127.0.0.1:8085/static', // 定义后端的接口
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/static': ''
+        }
+      }
+    }
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

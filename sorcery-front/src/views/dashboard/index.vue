@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="dashboard-container" style="height: 800px">
     <div class="dashboard-text">name: {{ name }}</div>
   </div>
 </template>
@@ -26,5 +26,12 @@ export default {
     font-size: 30px;
     line-height: 46px;
   }
+}
+.dashboard-text {
+    margin: 0;
+    margin: 0;
+    font-family: 'Times New Roman', Times, serif;
+    color: #070707;
+    text-align: center;
 }
 </style>
