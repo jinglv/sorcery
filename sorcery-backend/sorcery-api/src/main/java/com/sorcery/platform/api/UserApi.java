@@ -1,5 +1,6 @@
 package com.sorcery.platform.api;
 
+import cn.hutool.json.JSONUtil;
 import com.sorcery.platform.domain.JsonResponse;
 import com.sorcery.platform.domain.User;
 import com.sorcery.platform.domain.UserInfo;
@@ -59,6 +60,7 @@ public class UserApi {
     @ApiOperation(value = "获取认证dts token")
     @PostMapping("/user-dts")
     public JsonResponse<Map<String, Object>> loginForDts(@RequestBody LoginUserVO user) throws Exception {
+        log.info("登录用户信息：{}", JSONUtil.parse(user));
         Map<String, Object> login = userService.loginForDts(user);
         return JsonResponse.success(login);
     }
@@ -71,7 +73,7 @@ public class UserApi {
         userService.logout(refreshToken, userId);
         return JsonResponse.success();
     }
-    
+
     @ApiOperation(value = "获取用户信息")
     @GetMapping("/users")
     public JsonResponse<User> getUserInfo() {

@@ -43,3 +43,7 @@ npm run lint
 # code format check and auto fix
 npm run lint -- --fix
 ```
+
+# 使用icon
+
+- https://www.iconfont.cn/

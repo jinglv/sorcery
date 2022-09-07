@@ -51,8 +51,34 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '测试管理平台', icon: 'mofashi' }
     }]
+  },
+
+  {
+    path: '/project',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Project',
+        component: () => import('@/views/project/index'),
+        meta: { title: '项目管理', icon: 'project' }
+      }
+    ]
+  },
+
+  {
+    path: '/case',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Cases',
+        component: () => import('@/views/cases/index'),
+        meta: { title: '模块管理', icon: 'case' }
+      }
+    ]
   },
 
   {
@@ -149,16 +175,16 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+  //       meta: { title: 'External Link', icon: 'link' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

@@ -24,6 +24,11 @@ public enum ApiCodeEnum {
     SERVICE_ERROR("500", "服务错误"),
 
     /**
+     * 错误请求
+     */
+    BAD_REQUEST("400", "Bad Request"),
+
+    /**
      * 接口返回参数不正确
      */
     PARAM_ERROR("1000", "参数不正确");

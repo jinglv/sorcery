@@ -31,6 +31,12 @@ public class JsonResponse<T> {
     @ApiModelProperty(value = "响应结果数据", required = true)
     private T data;
 
+    /**
+     * 接口日志跟踪Id
+     */
+    @ApiModelProperty(value = "TraceId跟踪日志id", required = true)
+    private String traceId;
+
     private JsonResponse(String code, String msg, T data) {
         this.code = code;
         this.msg = msg;

@@ -1,6 +1,9 @@
 <template>
   <div class="dashboard-container" style="height: 800px">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">欢迎: {{ name }}~</div>
+    <div class="dashboard-backgroud">
+      <img src="../../assets/background.png" style="height: 500px; width: 600px;">
+    </div>
   </div>
 </template>
 
@@ -33,5 +36,9 @@ export default {
     font-family: 'Times New Roman', Times, serif;
     color: #070707;
     text-align: center;
+}
+.dashboard-backgroud {
+  margin-top: 100px;
+  text-align: center;
 }
 </style>

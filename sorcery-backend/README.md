@@ -148,6 +148,15 @@ git push -u origin main
     - 第三部分是签名（signature），主要由头部、载荷以及密钥组合加密而成
 - JWT优点：跨语言支持、便于传输、易于扩展
 
+## TraceId实现系统请求日志追踪
+
+1. 建立一个过滤器，在过滤器中给线程设置TraceId
+2. 将日志配置文件进行修改，把TraceId打印到日志中
+
+Spring默认的日志输出配置文件spring-configuration-metadata.json
+
+参考地址：https://developer.aliyun.com/article/822487
+
 ## common-random
 
 测试数据生成工具类：https://github.com/yindz/common-random
