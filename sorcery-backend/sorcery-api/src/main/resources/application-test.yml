@@ -10,6 +10,12 @@ spring:
     url: jdbc:mysql://8.140.112.109:3306/sorcery?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123123
+  # 上传文件总的最大值
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      # 单个文件的最大值
+      max-file-size: 5MB
 
 knife4j:
   # 是否开启加强模式 true开启  false关闭
@@ -22,3 +28,9 @@ knife4j:
     enable: false
     username: test
     password: 123456
+
+SavePath:
+  # 图标存储路径
+  ProfilePhoto: src/main/resources/static/images/
+  # 图标的映射路径
+  ProfilePhotoMapper: /images/

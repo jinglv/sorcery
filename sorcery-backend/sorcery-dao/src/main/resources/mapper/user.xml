@@ -3,7 +3,7 @@
 <mapper namespace="com.sorcery.platform.dao.UserDAO">
     <resultMap id="UserResultMap" type="com.sorcery.platform.domain.User">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_name" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="salt" jdbcType="VARCHAR" property="salt"/>

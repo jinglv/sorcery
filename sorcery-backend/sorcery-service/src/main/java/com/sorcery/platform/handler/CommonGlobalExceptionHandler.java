@@ -28,6 +28,7 @@ public class CommonGlobalExceptionHandler {
         if (e instanceof ConditionException) {
             return JsonResponse.fail();
         } else {
+            e.printStackTrace();
             return JsonResponse.ofCode(ApiCodeEnum.SERVICE_ERROR, errorMsg);
         }
     }

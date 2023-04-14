@@ -5,33 +5,35 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 用户表实体
- *
  * @author jinglv
- * @date 2022/9/1 10:21
+ * @date 2022/9/15 10:17
  */
 @Data
-public class User {
+public class Project {
     /**
      * 主键
      */
     private Long id;
     /**
-     * 用户名
+     * 项目名称
      */
-    private String username;
+    private String projectName;
     /**
-     * 用户密码
+     * 项目备注
      */
-    private String password;
+    private String description;
     /**
-     * 用户邮箱
+     * 项目封面图片
      */
-    private String email;
+    private String image;
     /**
-     * 密随机盐
+     * 是否删除
      */
-    private String salt;
+    private Integer isDelete;
+    /**
+     * 用户ID
+     */
+    private Long userId;
     /**
      * 创建时间
      */
@@ -40,8 +42,4 @@ public class User {
      * 更新时间
      */
     private LocalDateTime updateTime;
-    /**
-     * 用户信息
-     */
-    private UserInfo userInfo;
 }

@@ -1,4 +1,4 @@
-package com.sorcery.platform.vo;
+package com.sorcery.platform.vo.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,7 +19,7 @@ public class LoginUserVO {
      * 登录用户名
      */
     @ApiModelProperty(value = "用户名", name = "username", required = true, dataType = "String", notes = "唯一不可重复", example = "tester")
-    private String userName;
+    private String username;
 
     /**
      * 登录用户密码

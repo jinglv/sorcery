@@ -58,9 +58,10 @@ CREATE TABLE `t_projects`
 (
     `id`                        BIGINT  NOT NULL AUTO_INCREMENT COMMENT '主键',
     `project_name`              VARCHAR(50)  NOT NULL COMMENT '项目名称',
-    `describe`                  VARCHAR(1280) DEFAULT NULL COMMENT '项目描述',
+    `description`               VARCHAR(1280) DEFAULT NULL COMMENT '项目描述',
     `image`                     VARCHAR(255)  DEFAULT NULL COMMENT '项目图片',
     `is_delete`                 TINYINT(1)  DEFAULT 0 COMMENT '状态，0-未删除 1-已删除',
+    `user_id`                   BIGINT  NOT NULL COMMENT '用户id',
     `create_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)

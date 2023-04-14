@@ -12,17 +12,14 @@ public enum ApiCodeEnum {
      * 接口返回正确
      */
     SUCCESS("00000", "成功"),
-
     /**
      * 接口返回错误
      */
     FAIL("00001", "失败"),
-
     /**
      * 服务器错误
      */
     SERVICE_ERROR("500", "服务错误"),
-
     /**
      * 错误请求
      */
@@ -32,7 +29,6 @@ public enum ApiCodeEnum {
      * 接口返回参数不正确
      */
     PARAM_ERROR("1000", "参数不正确");
-
 
     /**
      * 业务状态码

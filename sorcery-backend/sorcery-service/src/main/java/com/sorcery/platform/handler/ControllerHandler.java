@@ -30,7 +30,7 @@ import java.util.UUID;
 @Aspect
 public class ControllerHandler {
 
-    private final static String TRACE_ID = "TRACE_ID";
+    private static final String TRACE_ID = "TRACE_ID";
 
     @Autowired
     HttpServletRequest request;
@@ -62,9 +62,13 @@ public class ControllerHandler {
         for (int i = 0; i < parameters.length; i++) {
             String parameterName = parameterNames[i];
             Object parameter = parameters[i];
-            parameterMap.put(parameterName, parameter);
+            // 如果上传的类型为file，则设置一个value值为file
+            if ("file".equals(parameterName)) {
+                parameterMap.put(parameterName, "file");
+            } else {
+                parameterMap.put(parameterName, parameter);
+            }
         }
-
         String parametersJsonString = JSON.toJSONString(parameterMap, SerializerFeature.WriteMapNullValue);
         log.info("{}#{} args:{}", clazzSimpleName, methodName, parametersJsonString);
 

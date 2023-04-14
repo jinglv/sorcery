@@ -16,7 +16,7 @@ public interface UserDAO {
     /**
      * 根据用户手机号码查询用户信息
      *
-     * @param userName 用户手名
+     * @param userName 用户名
      * @return 用户信息
      */
     User getUserByUserName(String userName);

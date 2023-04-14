@@ -1,4 +1,4 @@
-package com.sorcery.platform.vo;
+package com.sorcery.platform.vo.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

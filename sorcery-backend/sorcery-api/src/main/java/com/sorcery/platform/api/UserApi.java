@@ -7,8 +7,8 @@ import com.sorcery.platform.domain.UserInfo;
 import com.sorcery.platform.service.UserService;
 import com.sorcery.platform.support.UserSupport;
 import com.sorcery.platform.utils.RSAUtil;
-import com.sorcery.platform.vo.LoginUserVO;
-import com.sorcery.platform.vo.RegisterUserVO;
+import com.sorcery.platform.vo.user.LoginUserVO;
+import com.sorcery.platform.vo.user.RegisterUserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,6 @@ public class UserApi {
 
     @ApiOperation(value = "用户注册")
     @PostMapping("/users")
-
     public JsonResponse<String> addUser(@RequestBody RegisterUserVO user) {
         userService.addUser(user);
         return JsonResponse.success();
