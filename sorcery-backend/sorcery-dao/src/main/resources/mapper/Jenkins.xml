@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sorcery.platform.dao.JenkinsDAO">
+
+    <resultMap id="JenkinsInfoResultMap" type="com.sorcery.platform.domain.JenkinsInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="jenkins_name" jdbcType="VARCHAR" property="jenkinsName"/>
+        <result column="jenkins_url" jdbcType="VARCHAR" property="jenkinsUrl"/>
+        <result column="jenkins_username" jdbcType="VARCHAR" property="jenkinsUsername"/>
+        <result column="jenkins_password" jdbcType="VARCHAR" property="jenkinsPassword"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <insert id="addJenkinsInfo" parameterType="com.sorcery.platform.domain.JenkinsInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO t_jenkins(`jenkins_name`, `jenkins_url`, `jenkins_username`,
+        `jenkins_password`,`remark`,`is_delete`, `user_id`, `create_time`, `update_time`)
+        VALUES(#{jenkinsName}, #{jenkinsUrl}, #{jenkinsUsername}, #{jenkinsPassword}, #{remark},
+        #{isDelete}, #{userId}, #{createTime}, #{updateTime});
+    </insert>
+
+    <update id="updateJenkinsInfo" parameterType="com.sorcery.platform.domain.JenkinsInfo">
+        UPDATE `t_jenkins` SET
+        <if test="jenkins.jenkinsName != null and jenkins.jenkinsName != '' ">
+            `jenkins_name` = #{jenkins.jenkinsName},
+        </if>
+        <if test="jenkins.jenkinsUrl != null and jenkins.jenkinsUrl != '' ">
+            `jenkins_url` = #{jenkins.jenkinsUrl},
+        </if>
+        <if test="jenkins.jenkinsUsername != null and jenkins.jenkinsUsername != '' ">
+            `jenkins_username` = #{jenkins.jenkinsUsername},
+        </if>
+        <if test="jenkins.jenkinsPassword != null and jenkins.jenkinsPassword != '' ">
+            `jenkins_password` = #{jenkins.jenkinsPassword},
+        </if>
+        <if test="jenkins.remark != null and jenkins.remark != '' ">
+            `remark` = #{jenkins.remark},
+        </if>
+        <if test="jenkins.isDelete != null">
+            `is_delete` = #{jenkins.isDelete},
+        </if>
+        <if test="jenkins.userId != null">
+            `user_id` = #{jenkins.userId},
+        </if>
+        `update_time` = #{jenkins.updateTime}
+        WHERE
+        `id` = #{jenkinsId};
+    </update>
+
+    <select id="getJenkinsById" resultType="com.sorcery.platform.domain.JenkinsInfo" resultMap="JenkinsInfoResultMap">
+        SELECT *
+        FROM `t_jenkins`
+        WHERE `id` = #{jenkinsId} AND `is_delete` = 0;
+    </select>
+
+    <select id="getJenkinsByName" resultType="com.sorcery.platform.domain.JenkinsInfo" resultMap="JenkinsInfoResultMap">
+        SELECT *
+        FROM `t_jenkins`
+        WHERE `jenkins_name` = #{jenkinsName} AND `is_delete` = 0;
+    </select>
+
+    <select id="pageCountJenkinsInfo" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM `t_jenkins`
+        WHERE `is_delete` = 0;
+    </select>
+
+    <select id="pageJenkinsInfoList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.JenkinsInfo"
+            resultMap="JenkinsInfoResultMap">
+        SELECT *
+        FROM `t_jenkins`
+        WHERE `is_delete` = 0
+        ORDER BY `id` DESC
+        LIMIT #{start}, #{limit};
+    </select>
+
+</mapper>

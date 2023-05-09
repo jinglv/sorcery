@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sorcery.platform.dao.ProjectDAO">
+
+    <resultMap id="ProjectResultMap" type="com.sorcery.platform.domain.Project">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <insert id="addProject" parameterType="com.sorcery.platform.domain.Project" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO t_projects(`project_name`, `description`, `image`, `is_delete`, `user_id`, `create_time`,
+        `update_time`)
+        VALUES(#{projectName}, #{description}, #{image}, #{isDelete}, #{userId}, #{createTime}, #{updateTime});
+    </insert>
+
+    <update id="updateProject" parameterType="com.sorcery.platform.domain.Project">
+        UPDATE `t_projects` SET
+        <if test="project.projectName != null and project.projectName != '' ">
+            `project_name` = #{project.projectName},
+        </if>
+        <if test="project.description != null and project.description != '' ">
+            `description` = #{project.description},
+        </if>
+        <if test="project.image != null and project.image != '' ">
+            `image` = #{project.image},
+        </if>
+        <if test="project.isDelete != null">
+            `is_delete` = #{project.isDelete},
+        </if>
+        <if test="project.userId != null">
+            `user_id` = #{project.userId},
+        </if>
+        `update_time` = #{project.updateTime}
+        WHERE
+        `id` = #{projectId};
+    </update>
+
+    <select id="getProjectById" resultType="com.sorcery.platform.domain.Project" resultMap="ProjectResultMap">
+        SELECT *
+        FROM `t_projects`
+        WHERE `id` = #{projectId} AND `is_delete` = 0;
+    </select>
+
+    <select id="getProjectByName" resultType="com.sorcery.platform.domain.Project" resultMap="ProjectResultMap">
+        SELECT *
+        FROM `t_projects`
+        WHERE `project_name` = #{projectName} AND `is_delete` = 0;
+    </select>
+
+    <select id="pageCountProject" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM `t_projects`
+        WHERE `is_delete` = 0;
+    </select>
+
+    <select id="pageProjectList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.Project"
+            resultMap="ProjectResultMap">
+        SELECT *
+        FROM `t_projects`
+        WHERE `is_delete` = 0
+        ORDER BY `id` DESC
+        LIMIT #{start}, #{limit};
+    </select>
+
+</mapper>

@@ -10,11 +10,11 @@ public interface Constants {
     /**
      * 未删除
      */
-    Integer DEL_FLAG_ONE = 0;
+    Integer DEL_FLAG_ZERO = 0;
     /**
      * 已删除
      */
-    Integer DEL_FLAG_ZERO = 1;
+    Integer DEL_FLAG_ONE = 1;
     /**
      * 0 无效
      */

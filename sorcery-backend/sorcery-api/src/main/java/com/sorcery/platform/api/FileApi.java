@@ -32,7 +32,7 @@ public class FileApi {
      * @return 返回请求接口结果
      */
     @ApiOperation(value = "文件上传", notes = "文件上传接口")
-    @PostMapping("/file")
+    @PostMapping("/static/file")
     public JsonResponse<String> uploads(@RequestParam("file") MultipartFile file) {
         String url = fileUtils.uploads(file);
         return JsonResponse.success(url);

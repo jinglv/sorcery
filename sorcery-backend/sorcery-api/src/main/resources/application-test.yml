@@ -13,9 +13,15 @@ spring:
   # 上传文件总的最大值
   servlet:
     multipart:
+      enabled: true
       max-request-size: 10MB
       # 单个文件的最大值
       max-file-size: 5MB
+
+logging:
+  level:
+    com.sorcery.platform.dao: DEBUG
+
 
 knife4j:
   # 是否开启加强模式 true开启  false关闭
@@ -31,6 +37,7 @@ knife4j:
 
 SavePath:
   # 图标存储路径
-  ProfilePhoto: src/main/resources/static/images/
+  ProfilePhoto: sorcery-api/src/main/resources/static/images/
   # 图标的映射路径
   ProfilePhotoMapper: /images/
+

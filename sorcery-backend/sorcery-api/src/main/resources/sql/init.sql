@@ -69,3 +69,85 @@ CREATE TABLE `t_projects`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci
   COMMENT ='项目管理表';
+
+# t_modules模块管理表
+DROP TABLE IF EXISTS `t_modules`;
+CREATE TABLE `t_modules`
+(
+    `id`                        BIGINT  NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `module_name`               VARCHAR(50)  NOT NULL COMMENT '模块名称',
+    `module_parent_id`          BIGINT  NOT NULL COMMENT '模块上级id',
+    `is_delete`                 TINYINT(1)  DEFAULT 0 COMMENT '状态，0-未删除 1-已删除',
+    `user_id`                   BIGINT  NOT NULL COMMENT '用户id',
+    `create_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  COMMENT ='模块管理表';
+
+# t_apis接口信息管理表
+DROP TABLE IF EXISTS `t_apis`;
+CREATE TABLE `t_apis`
+(
+    `id`                        BIGINT  NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `api_name`                  VARCHAR(50)  NOT NULL COMMENT '接口名称',
+    `api_path`                  BIGINT  NOT NULL COMMENT '接口地址',
+    `method`                    VARCHAR(20)  NOT NULL COMMENT '接口请求方法',
+    `header`                    VARCHAR(200)  NOT NULL COMMENT '接口请求头',
+    `params_type`               VARCHAR(20)  NOT NULL COMMENT '接口请求参数类型',
+    `params_body`               VARCHAR(200)  NOT NULL COMMENT '接口请求主体',
+    `response`                  VARCHAR(225)  NOT NULL COMMENT '接口请求主体',
+    `assert_type`               VARCHAR(20)  NOT NULL COMMENT '断言类型',
+    `assert_text`               VARCHAR(20)  NOT NULL COMMENT '断言数据',
+    `is_delete`                 TINYINT(1)  DEFAULT 0 COMMENT '状态，0-未删除 1-已删除',
+    `user_id`                   BIGINT  NOT NULL COMMENT '用户id',
+    `create_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  COMMENT ='接口信息管理表';
+
+  # t_jenkins Jenkins信息管理表
+  DROP TABLE IF EXISTS `t_jenkins`;
+  CREATE TABLE `t_jenkins`
+  (
+      `id`                      BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键' ,
+      `jenkins_name`            VARCHAR(100)        NULL COMMENT '名称',
+      `jenkins_url`             VARCHAR(100)        NULL COMMENT 'Jenkins的baseUrl',
+      `jenkins_username`        VARCHAR(100)        NULL COMMENT 'Jenkins认证登录用户名',
+      `jenkins_password`        VARCHAR(100)        NULL COMMENT 'Jenkins认证登录密码',
+      `remark`                  VARCHAR(100)        NULL COMMENT '备注',
+      `is_delete`               TINYINT(1)  DEFAULT 0 COMMENT '状态，0-未删除 1-已删除',
+      `user_id`                 BIGINT                 NOT NULL COMMENT '创建人id，test_user主键id',
+      `create_time`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+      `update_time`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+      PRIMARY KEY (`id`) USING BTREE
+  ) ENGINE = InnoDB
+    AUTO_INCREMENT = 1
+    DEFAULT CHARSET = utf8mb4
+    ROW_FORMAT = DYNAMIC COMMENT ='Jenkins信息管理表';
+
+  # t_jenkins_task Jenkins任务管理表
+  DROP TABLE IF EXISTS `t_jenkins_task`;
+  CREATE TABLE `t_jenkins_task`
+  (
+      `id`                      BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键' ,
+      `jenkins_task_name`       VARCHAR(100)        NULL COMMENT 'Jenkins任务名称',
+      `jenkins_id`              VARCHAR(100)        NULL COMMENT 'Jenkins信息id（主键）',
+      `jenkins_job_name`        VARCHAR(100)        NULL COMMENT 'Jenkins的构建Job',
+      `build_url`               VARCHAR(100)        NULL COMMENT 'Jenkins的构建url',
+      `command`                 VARCHAR(100)        NULL COMMENT '执行测试命令',
+      `status`                  TINYINT   DEFAULT 1 NOT NULL COMMENT '状态 0 无效 1 新建 2 执行中 3 执行完成',
+      `remark`                  VARCHAR(100)        NULL COMMENT '备注',
+      `user_id`                 BIGINT                 NOT NULL COMMENT '创建人id，test_user主键id',
+      `create_time`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+      `update_time`             TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+      PRIMARY KEY (`id`) USING BTREE
+  ) ENGINE = InnoDB
+    AUTO_INCREMENT = 1
+    DEFAULT CHARSET = utf8mb4
+    ROW_FORMAT = DYNAMIC COMMENT ='Jenkins任务管理表';

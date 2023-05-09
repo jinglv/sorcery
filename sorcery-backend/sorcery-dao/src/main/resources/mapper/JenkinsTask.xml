@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sorcery.platform.dao.JenkinsTaskDAO">
+
+    <resultMap id="JenkinsTaskResultMap" type="com.sorcery.platform.domain.JenkinsTask">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="jenkins_task_name" jdbcType="VARCHAR" property="jenkinsTaskName"/>
+        <result column="jenkins_id" jdbcType="INTEGER" property="jenkinsId"/>
+        <result column="jenkins_job_name" jdbcType="VARCHAR" property="jenkinsJobName"/>
+        <result column="build_url" jdbcType="VARCHAR" property="buildUrl"/>
+        <result column="command" jdbcType="VARCHAR" property="command"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <insert id="addJenkinsTask" parameterType="com.sorcery.platform.domain.JenkinsTask" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO t_jenkins_task(`jenkins_task_name`, `jenkins_id`, `jenkins_job_name`,
+        `build_url`,`command`,`remark`, `status`,`user_id`, `create_time`, `update_time`)
+        VALUES(#{jenkinsTaskName}, #{jenkinsId}, #{jenkinsJobName}, #{buildUrl}, #{command},
+        #{remark}, #{status}, #{userId}, #{createTime}, #{updateTime});
+    </insert>
+
+    <update id="updateJenkinsTask" parameterType="com.sorcery.platform.domain.JenkinsInfo">
+        UPDATE `t_jenkins_task` SET
+        <if test="jenkins.jenkinsTaskName != null and jenkins.jenkinsTaskName != '' ">
+            `jenkins_task_name` = #{jenkins.jenkinsTaskName},
+        </if>
+        <if test="jenkins.jenkinsId != null">
+            `jenkins_id` = #{jenkins.jenkinsId},
+        </if>
+        <if test="jenkins.jenkinsJobName != null and jenkins.jenkinsJobName != '' ">
+            `jenkins_job_name` = #{jenkins.jenkinsJobName},
+        </if>
+        <if test="jenkins.buildUrl != null and jenkins.buildUrl != '' ">
+            `build_url` = #{jenkins.buildUrl},
+        </if>
+        <if test="jenkins.command != null and jenkins.command != '' ">
+            `command` = #{jenkins.command},
+        </if>
+        <if test="jenkins.remark != null and jenkins.remark != '' ">
+            `remark` = #{jenkins.remark},
+        </if>
+        <if test="jenkins.status != null">
+            `status` = #{jenkins.status},
+        </if>
+        <if test="jenkins.userId != null">
+            `user_id` = #{jenkins.userId},
+        </if>
+        `update_time` = #{jenkins.updateTime}
+        WHERE
+        `id` = #{jenkinsTaskId};
+    </update>
+
+    <delete id="deleteJenkinsTaskById" parameterType="java.lang.Long">
+        DELETE FROM `t_jenkins_task`
+        WHERE `id` = #{jenkinsTaskId};
+    </delete>
+
+    <select id="getJenkinsTaskById" resultType="com.sorcery.platform.domain.JenkinsTask"
+            resultMap="JenkinsTaskResultMap">
+        SELECT *
+        FROM `t_jenkins_task`
+        WHERE `id` = #{jenkinsId};
+    </select>
+
+    <select id="getJenkinsTaskByName" resultType="com.sorcery.platform.domain.JenkinsTask"
+            resultMap="JenkinsTaskResultMap">
+        SELECT *
+        FROM `t_jenkins_task`
+        WHERE `jenkins_task_name` = #{jenkinsTaskName};
+    </select>
+
+    <select id="pageCountJenkinsTask" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM `t_jenkins_task`;
+    </select>
+
+    <select id="pageJenkinsTaskList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.JenkinsTask"
+            resultMap="JenkinsTaskResultMap">
+        SELECT *
+        FROM `t_jenkins_task`
+        ORDER BY `id` DESC
+        LIMIT #{start}, #{limit};
+    </select>
+
+</mapper>

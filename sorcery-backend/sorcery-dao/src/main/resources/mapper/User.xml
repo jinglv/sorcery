@@ -24,7 +24,7 @@
 
     <insert id="addUser" parameterType="com.sorcery.platform.domain.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_user(`user_name`, `password`, `email`, `salt`, `create_time`, `update_time`)
-        VALUES(#{userName}, #{password}, #{email}, #{salt}, #{createTime}, #{updateTime});
+        VALUES(#{username}, #{password}, #{email}, #{salt}, #{createTime}, #{updateTime});
     </insert>
 
     <insert id="addUserInfo" parameterType="com.sorcery.platform.domain.UserInfo">

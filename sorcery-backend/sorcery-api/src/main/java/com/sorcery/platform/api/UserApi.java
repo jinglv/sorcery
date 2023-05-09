@@ -78,6 +78,7 @@ public class UserApi {
     public JsonResponse<User> getUserInfo() {
         Long userId = userSupport.getCurrentUserId();
         User user = userService.getUserInfo(userId);
+        log.info("查询到用户需信息: {}", JSONUtil.parse(user));
         return JsonResponse.success(user);
     }
 

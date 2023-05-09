@@ -65,6 +65,8 @@ public class ControllerHandler {
             // 如果上传的类型为file，则设置一个value值为file
             if ("file".equals(parameterName)) {
                 parameterMap.put(parameterName, "file");
+            } else if ("image".equals(parameterName)) {
+                parameterMap.put(parameterName, "image");
             } else {
                 parameterMap.put(parameterName, parameter);
             }
@@ -91,7 +93,7 @@ public class ControllerHandler {
         }
 
         if (response instanceof JsonResponse) {
-            ((JsonResponse) response).setTraceId(MDC.get(TRACE_ID));
+            ((JsonResponse<?>) response).setTraceId(MDC.get(TRACE_ID));
         }
 
         String resultJsonString = JSON.toJSONString(response, SerializerFeature.WriteMapNullValue,

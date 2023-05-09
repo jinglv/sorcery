@@ -23,9 +23,4 @@ public class ProjectVO {
      */
     @ApiModelProperty(value = "项目备注", name = "description", required = true, dataType = "String", notes = "备注信息", example = "tester")
     private String description;
-    /**
-     * 项目封面图片
-     */
-    @ApiModelProperty(value = "项目封面图片", name = "image", required = true, dataType = "String", notes = "图片", example = "tester")
-    private String image;
 }

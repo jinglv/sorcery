@@ -6,41 +6,47 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 用户信息实体
- *
  * @author jinglv
- * @date 2022/9/1 10:27
+ * @date 2023/4/27 16:39
  */
 @Data
-public class UserInfo {
+public class JenkinsTask {
     /**
      * 主键
      */
     private Long id;
     /**
+     * Jenkins任务名称
+     */
+    private String jenkinsTaskName;
+    /**
+     * Jenkins Id
+     */
+    private Long jenkinsId;
+    /**
+     * Jenkins执行Job
+     */
+    private String jenkinsJobName;
+    /**
+     * Jenkins构建URL
+     */
+    private String buildUrl;
+    /**
+     * Jenkins执行命令
+     */
+    private String command;
+    /**
+     * 状态 0 无效 1 新建 2 执行中 3 执行完成
+     */
+    private Integer status;
+    /**
+     * 备注
+     */
+    private String remark;
+    /**
      * 用户ID
      */
     private Long userId;
-    /**
-     * 昵称
-     */
-    private String nick;
-    /**
-     * 头像
-     */
-    private String avatar;
-    /**
-     * 签名
-     */
-    private String sign;
-    /**
-     * 性别
-     */
-    private String gender;
-    /**
-     * 生日
-     */
-    private String birth;
     /**
      * 创建时间
      */

@@ -6,33 +6,45 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 用户表实体
+ * Jenkins信息
  *
  * @author jinglv
- * @date 2022/9/1 10:21
+ * @date 2023/4/27 10:32
  */
 @Data
-public class User {
+public class JenkinsInfo {
     /**
      * 主键
      */
     private Long id;
     /**
-     * 用户名
+     * Jenkins名称
      */
-    private String username;
+    private String jenkinsName;
     /**
-     * 用户密码
+     * Jenkins基础url
      */
-    private String password;
+    private String jenkinsUrl;
     /**
-     * 用户邮箱
+     * Jenkins认证登录用户名
      */
-    private String email;
+    private String jenkinsUsername;
     /**
-     * 密随机盐
+     * Jenkins认证登录密码
      */
-    private String salt;
+    private String jenkinsPassword;
+    /**
+     * 备注
+     */
+    private String remark;
+    /**
+     * 是否删除
+     */
+    private Integer isDelete;
+    /**
+     * 用户ID
+     */
+    private Long userId;
     /**
      * 创建时间
      */
@@ -43,8 +55,4 @@ public class User {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
-    /**
-     * 用户信息
-     */
-    private UserInfo userInfo;
 }

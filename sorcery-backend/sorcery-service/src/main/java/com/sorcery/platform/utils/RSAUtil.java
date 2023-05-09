@@ -128,7 +128,7 @@ public class RSAUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String str = RSAUtil.encrypt("123456");
+        String str = RSAUtil.encrypt("admin");
         System.out.println(str);
     }
 }

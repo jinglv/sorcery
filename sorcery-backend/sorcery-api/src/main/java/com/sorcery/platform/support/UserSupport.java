@@ -15,6 +15,11 @@ import java.util.Objects;
 @Component
 public class UserSupport {
 
+    /**
+     * 根据登录信息，获取用户id
+     *
+     * @return 用户id
+     */
     public Long getCurrentUserId() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         String token = Objects.requireNonNull(requestAttributes).getRequest().getHeader("token");

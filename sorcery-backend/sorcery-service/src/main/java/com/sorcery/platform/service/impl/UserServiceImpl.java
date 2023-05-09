@@ -67,8 +67,10 @@ public class UserServiceImpl implements UserService {
         }
         User user = new User();
         String md5Password = MD5Util.sign(rawPassword, salt, CHARSET);
+        user.setUsername(userName);
         user.setSalt(salt);
         user.setPassword(md5Password);
+        user.setEmail(registerUser.getEmail());
         user.setCreateTime(now);
         user.setUpdateTime(now);
         userDAO.addUser(user);
@@ -78,6 +80,8 @@ public class UserServiceImpl implements UserService {
         userInfo.setNick(UserConstant.DEFAULT_NICK);
         userInfo.setGender(UserConstant.GENDER_FEMALE);
         userInfo.setBirth(UserConstant.DEFAULT_BIRTH);
+        userInfo.setAvatar(UserConstant.DEFAULT_AVATAR);
+        userInfo.setSign(UserConstant.DEFAULT_SIGN);
         userInfo.setCreateTime(now);
         userInfo.setUpdateTime(now);
         Integer insert = userDAO.addUserInfo(userInfo);
