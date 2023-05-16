@@ -54,19 +54,27 @@
         WHERE `project_name` = #{projectName} AND `is_delete` = 0;
     </select>
 
-    <select id="pageCountProject" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <select id="pageCountProject" resultType="java.lang.Integer">
         SELECT COUNT(1)
         FROM `t_projects`
-        WHERE `is_delete` = 0;
+        WHERE `is_delete` = 0
+        <if test="params.projectName != null and params.projectName != '' ">
+            and `project_name` LIKE CONCAT('%', #{params.projectName}, '%')
+        </if>
     </select>
 
-    <select id="pageProjectList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.Project"
+    <select id="pageProjectList" resultType="com.sorcery.platform.domain.Project"
             resultMap="ProjectResultMap">
         SELECT *
         FROM `t_projects`
-        WHERE `is_delete` = 0
+        <where>
+            `is_delete` = 0
+            <if test="params.projectName != null and params.projectName != ''">
+                AND `project_name` LIKE CONCAT('%', #{params.projectName}, '%')
+            </if>
+        </where>
         ORDER BY `id` DESC
-        LIMIT #{start}, #{limit};
+        LIMIT #{pageNum}, #{pageSize};
     </select>
 
 </mapper>

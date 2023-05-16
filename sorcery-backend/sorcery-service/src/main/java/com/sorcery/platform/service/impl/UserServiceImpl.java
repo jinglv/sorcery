@@ -2,7 +2,6 @@ package com.sorcery.platform.service.impl;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
-import com.mysql.cj.util.StringUtils;
 import com.sorcery.platform.constant.UserConstant;
 import com.sorcery.platform.dao.UserDAO;
 import com.sorcery.platform.domain.User;
@@ -16,6 +15,7 @@ import com.sorcery.platform.vo.user.LoginUserVO;
 import com.sorcery.platform.vo.user.RegisterUserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     public void addUser(RegisterUserVO registerUser) {
         log.info("用户注册信息：{}", JSONUtil.parse(registerUser));
         String userName = registerUser.getUserName();
-        if (StringUtils.isNullOrEmpty(userName)) {
+        if (StringUtils.isBlank(userName)) {
             throw new ConditionException("用户名不能为空！");
         }
         User dbUser = this.getUserByUserName(userName);
@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
         // 添加用户信息
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(user.getId());
+        // 注册时，个人信息设置默认信息
         userInfo.setNick(UserConstant.DEFAULT_NICK);
         userInfo.setGender(UserConstant.GENDER_FEMALE);
         userInfo.setBirth(UserConstant.DEFAULT_BIRTH);
@@ -99,7 +100,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, String> login(LoginUserVO user) throws Exception {
         log.info("用户登录信息：{}", JSONUtil.parse(user));
         String userName = user.getUsername();
-        if (StringUtils.isNullOrEmpty(userName)) {
+        if (StringUtils.isBlank(userName)) {
             throw new ConditionException("用户名不能为空！");
         }
         User dbUser = this.getUserByUserName(userName);
@@ -127,7 +128,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> loginForDts(LoginUserVO user) throws Exception {
         log.info("用户登录信息：{}", JSONUtil.parse(user));
         String userName = user.getUsername() == null ? "" : user.getUsername();
-        if (StringUtils.isNullOrEmpty(userName)) {
+        if (StringUtils.isBlank(userName)) {
             throw new ConditionException("参数异常！");
         }
         User dbUser = userDAO.getUserByUserName(userName);
@@ -149,9 +150,12 @@ public class UserServiceImpl implements UserService {
         Long userId = dbUser.getId();
         String accessToken = TokenUtil.generateToken(userId);
         String refreshToken = TokenUtil.generateRefreshToken(userId);
-        //保存refresh token到数据库
-        Integer deleteResult = userDAO.deleteRefreshTokenByUserId(userId);
-        Assert.isFalse(deleteResult != 1, "refresh token删除失败!");
+        String refreshTokenByUserId = userDAO.getRefreshTokenByUserId(userId);
+        if (!StringUtils.isBlank(refreshTokenByUserId)) {
+            //保存refresh token到数据库
+            Integer deleteResult = userDAO.deleteRefreshTokenByUserId(userId);
+            Assert.isFalse(deleteResult != 1, "refresh token删除失败!");
+        }
         Integer addRefreshTokenResult = userDAO.addRefreshToken(refreshToken, userId, new Date(), new Date());
         Assert.isFalse(addRefreshTokenResult != 1, "refresh token新增失败!");
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sorcery.platform.dao.ApiExtractDAO">
+
+    <resultMap id="ApiExtractResultMap" type="com.sorcery.platform.domain.ApiExtract">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="api_id" jdbcType="INTEGER" property="apiId"/>
+        <result column="api_extract_name" jdbcType="VARCHAR" property="apiExtractName"/>
+        <result column="extract" jdbcType="VARCHAR" property="extract"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+        <result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <insert id="addApiExtract" parameterType="com.sorcery.platform.domain.ApiExtract" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO t_api_extract(`api_id`, `api_extract_name`, `extract`,
+        `value`, `is_delete`, `user_id`, `create_time`, `update_time`)
+        VALUES(#{apiId}, #{apiExtractName}, #{extract}, #{value},
+        #{isDelete}, #{userId}, #{createTime}, #{updateTime});
+    </insert>
+
+    <update id="updateApiExtract" parameterType="com.sorcery.platform.domain.ApiExtract">
+        UPDATE `t_api_extract` SET
+        <if test="apiInfoExtract.apiId != null">
+            `api_id` = #{apiInfoExtract.apiId},
+        </if>
+        <if test="apiInfoExtract.apiExtractName != null and apiInfoExtract.apiExtractName != '' ">
+            `api_extract_name` = #{apiInfoExtract.apiExtractName},
+        </if>
+        <if test="apiInfoExtract.extract != null and apiInfoExtract.extract != '' ">
+            `extract` = #{apiInfoExtract.extract},
+        </if>
+        <if test="apiInfoExtract.value != null and apiInfoExtract.value != '' ">
+            `value` = #{apiInfoExtract.value},
+        </if>
+        <if test="apiInfoExtract.isDelete != null">
+            `is_delete` = #{apiInfoExtract.isDelete},
+        </if>
+        <if test="apiInfoExtract.userId != null">
+            `user_id` = #{apiInfoExtract.userId},
+        </if>
+        `update_time` = #{apiInfoExtract.updateTime}
+        WHERE
+        `id` = #{apiInfoExtractId};
+    </update>
+
+    <select id="getApiExtractById" resultType="com.sorcery.platform.domain.ApiExtract" resultMap="ApiExtractResultMap">
+        SELECT *
+        FROM `t_api_extract`
+        WHERE `id` = #{apiExtractId} AND `is_delete` = 0;
+    </select>
+
+    <select id="getApiExtractByName" resultType="com.sorcery.platform.domain.ApiExtract"
+            resultMap="ApiExtractResultMap">
+        SELECT *
+        FROM `t_api_extract`
+        WHERE `api_extract_name` = #{apiExtractName} AND `is_delete` = 0;
+    </select>
+
+    <select id="pageCountApiExtract" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM `t_api_extract`
+        WHERE `is_delete` = 0;
+    </select>
+
+    <select id="pageApiExtractList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.ApiExtract"
+            resultMap="ApiExtractResultMap">
+        SELECT *
+        FROM `t_api_extract`
+        WHERE `is_delete` = 0
+        ORDER BY `id` DESC
+        LIMIT #{start}, #{limit};
+    </select>
+
+</mapper>

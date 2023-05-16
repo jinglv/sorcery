@@ -2,7 +2,6 @@ package com.sorcery.platform.service.impl;
 
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson.JSONObject;
-import com.mysql.cj.util.StringUtils;
 import com.sorcery.platform.constant.Constants;
 import com.sorcery.platform.dao.JenkinsTaskDAO;
 import com.sorcery.platform.domain.JenkinsInfo;
@@ -12,9 +11,10 @@ import com.sorcery.platform.exception.ConditionException;
 import com.sorcery.platform.jenkins.JenkinsClient;
 import com.sorcery.platform.service.JenkinsService;
 import com.sorcery.platform.service.JenkinsTaskService;
-import com.sorcery.platform.vo.JenkinsTaskVO;
+import com.sorcery.platform.vo.jenkins.JenkinsTaskVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -161,7 +161,7 @@ public class JenkinsTaskServiceImpl implements JenkinsTaskService {
         if (Objects.isNull(jenkinsTaskInfo)) {
             throw new ConditionException("未查询到Jenkins任务信息");
         }
-        if (StringUtils.isNullOrEmpty(buildUrl)) {
+        if (StringUtils.isBlank(buildUrl)) {
             throw new ConditionException("Jenkins任务构建地址不能为空");
         }
         if (ObjectUtils.isEmpty(status)) {

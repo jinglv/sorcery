@@ -39,5 +39,5 @@ SavePath:
   # 图标存储路径
   ProfilePhoto: sorcery-api/src/main/resources/static/images/
   # 图标的映射路径
-  ProfilePhotoMapper: /images/
+  ProfilePhotoMapper: static/images/
 

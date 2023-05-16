@@ -69,36 +69,42 @@ export const constantRoutes = [
   },
 
   {
-    path: '/case',
+    path: '/apis',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Cases',
-        component: () => import('@/views/cases/index'),
-        meta: { title: '模块管理', icon: 'case' }
+        name: 'Apis',
+        component: () => import('@/views/apis/index'),
+        meta: { title: '接口管理', icon: 'api' }
       }
     ]
   },
 
   {
-    path: '/example',
+    path: '/jenkins',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect: '/jenkins/info',
+    name: 'Jenkins',
+    meta: { title: 'Jenkins', icon: 'jenkins' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'info',
+        name: 'Info',
+        component: () => import('@/views/jenkins/info/index'),
+        meta: { title: 'Jenkins基础信息', icon: 'info' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'task',
+        name: 'Task',
+        component: () => import('@/views/jenkins/task/index'),
+        meta: { title: 'Jenkins任务', icon: 'task' }
+      },
+      {
+        path: 'report',
+        name: 'Report',
+        component: () => import('@/views/jenkins/report/index'),
+        meta: { title: 'Allure测试报告', icon: 'report' }
       }
     ]
   },

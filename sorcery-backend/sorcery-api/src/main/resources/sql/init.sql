@@ -77,6 +77,7 @@ CREATE TABLE `t_modules`
     `id`                        BIGINT  NOT NULL AUTO_INCREMENT COMMENT '主键',
     `module_name`               VARCHAR(50)  NOT NULL COMMENT '模块名称',
     `module_parent_id`          BIGINT  NOT NULL COMMENT '模块上级id',
+    `project_id`                BIGINT  NOT NULL COMMENT '项目id',
     `is_delete`                 TINYINT(1)  DEFAULT 0 COMMENT '状态，0-未删除 1-已删除',
     `user_id`                   BIGINT  NOT NULL COMMENT '用户id',
     `create_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -92,17 +93,18 @@ DROP TABLE IF EXISTS `t_apis`;
 CREATE TABLE `t_apis`
 (
     `id`                        BIGINT  NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `api_name`                  VARCHAR(50)  NOT NULL COMMENT '接口名称',
-    `api_path`                  BIGINT  NOT NULL COMMENT '接口地址',
-    `method`                    VARCHAR(20)  NOT NULL COMMENT '接口请求方法',
+    `module_id`                 BIGINT        NOT NULL COMMENT '模块id',
+    `api_name`                  VARCHAR(50)   NOT NULL COMMENT '接口名称',
+    `api_path`                  VARCHAR(200)  NOT NULL COMMENT '接口地址',
+    `method`                    VARCHAR(20)   NOT NULL COMMENT '接口请求方法',
     `header`                    VARCHAR(200)  NOT NULL COMMENT '接口请求头',
-    `params_type`               VARCHAR(20)  NOT NULL COMMENT '接口请求参数类型',
+    `params_type`               TINYINT(1)    NOT NULL COMMENT '接口请求参数类型 1-params 2-json',
     `params_body`               VARCHAR(200)  NOT NULL COMMENT '接口请求主体',
-    `response`                  VARCHAR(225)  NOT NULL COMMENT '接口请求主体',
-    `assert_type`               VARCHAR(20)  NOT NULL COMMENT '断言类型',
-    `assert_text`               VARCHAR(20)  NOT NULL COMMENT '断言数据',
-    `is_delete`                 TINYINT(1)  DEFAULT 0 COMMENT '状态，0-未删除 1-已删除',
-    `user_id`                   BIGINT  NOT NULL COMMENT '用户id',
+    `response`                  VARCHAR(225)  NOT NULL COMMENT '接口响应主体',
+    `assert_type`               TINYINT(1)    NOT NULL COMMENT '断言类型 1-包含 2-等于',
+    `assert_text`               VARCHAR(20)   NOT NULL COMMENT '断言数据',
+    `is_delete`                 TINYINT(1)    DEFAULT 0 COMMENT '状态，0-未删除 1-已删除',
+    `user_id`                   BIGINT        NOT NULL COMMENT '用户id',
     `create_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`)
@@ -110,6 +112,25 @@ CREATE TABLE `t_apis`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci
   COMMENT ='接口信息管理表';
+
+  # t_api_extract接口断言信息表
+  DROP TABLE IF EXISTS `t_api_extract`;
+  CREATE TABLE `t_api_extract`
+  (
+      `id`                        BIGINT  NOT NULL AUTO_INCREMENT COMMENT '主键',
+      `api_id`                    BIGINT  NOT NULL COMMENT '接口信息id',
+      `api_extract_name`          VARCHAR(200)  NOT NULL COMMENT '接口断言名称',
+      `extract`                   VARCHAR(200)  NOT NULL COMMENT '提取规则',
+      `value`                     VARCHAR(200)  NOT NULL COMMENT '提取值',
+      `is_delete`                 TINYINT(1)  DEFAULT 0 COMMENT '状态，0-未删除 1-已删除',
+      `user_id`                   BIGINT  NOT NULL COMMENT '用户id',
+      `create_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+      `update_time`               TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+      PRIMARY KEY (`id`)
+  ) ENGINE = InnoDB
+    DEFAULT CHARSET = utf8mb4
+    COLLATE = utf8mb4_general_ci
+    COMMENT ='接口断言信息表';
 
   # t_jenkins Jenkins信息管理表
   DROP TABLE IF EXISTS `t_jenkins`;

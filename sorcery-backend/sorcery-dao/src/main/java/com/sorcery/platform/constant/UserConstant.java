@@ -13,6 +13,6 @@ public interface UserConstant {
     String GENDER_UNKNOW = "0";
     String DEFAULT_BIRTH = "1999-10-01";
     String DEFAULT_NICK = "萌萌哒";
-    String DEFAULT_AVATAR = "/images/avatar.jpeg";
+    String DEFAULT_AVATAR = "/static/images/avatar.jpeg";
     String DEFAULT_SIGN = "今天是个好天气";
 }

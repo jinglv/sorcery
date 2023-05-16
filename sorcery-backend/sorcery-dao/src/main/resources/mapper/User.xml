@@ -16,6 +16,7 @@
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="nick" jdbcType="VARCHAR" property="nick"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
         <result column="gender" jdbcType="VARCHAR" property="gender"/>
         <result column="birth" jdbcType="VARCHAR" property="birth"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -28,50 +29,50 @@
     </insert>
 
     <insert id="addUserInfo" parameterType="com.sorcery.platform.domain.UserInfo">
-        INSERT INTO t_user_info(`user_id`, `nick`, `avatar`, `gender`, `birth`, `create_time`, `update_time`)
-        VALUES(#{userId}, #{nick}, #{avatar}, #{gender}, #{birth}, #{createTime}, #{updateTime});
+        INSERT INTO t_user_info(`user_id`, `nick`, `avatar`, `sign`, `gender`, `birth`, `create_time`, `update_time`)
+        VALUES(#{userId}, #{nick}, #{avatar}, #{sign}, #{gender}, #{birth}, #{createTime}, #{updateTime});
     </insert>
 
     <insert id="addRefreshToken">
-        INSERT INTO t_refresh_token(`user_id`, `refresh_token`, `create_time`, `update_time`)
+        INSERT INTO `t_refresh_token`(`user_id`, `refresh_token`, `create_time`, `update_time`)
         VALUES(#{userId}, #{refreshToken}, #{createTime}, #{updateTime});
     </insert>
 
     <delete id="deleteRefreshTokenByUserId" parameterType="java.lang.Long">
-        DELETE FROM t_refresh_token WHERE user_Id = #{userId};
+        DELETE FROM `t_refresh_token` WHERE `user_Id` = #{userId};
     </delete>
 
     <delete id="deleteRefreshToken">
-        DELETE FROM t_refresh_token WHERE refresh_token=#{refreshToken} AND user_Id = #{userId};
+        DELETE FROM `t_refresh_token` WHERE `refresh_token`=#{refreshToken} AND `user_Id` = #{userId};
     </delete>
 
     <update id="updateUserInfo" parameterType="com.sorcery.platform.domain.UserInfo">
         UPDATE
-        t_user_info
+        `t_user_info`
         SET
         <if test="nick != null and nick != '' ">
-            nick = #{nick},
+            `nick` = #{nick},
         </if>
-        <if test="avatar != null">
-            avatar = #{avatar},
+        <if test="avatar != null and avatar != '' ">
+            `avatar` = #{avatar},
         </if>
-        <if test="sign != null">
-            sign = #{sign},
+        <if test="sign != null and sign != '' ">
+            `sign` = #{sign},
         </if>
         <if test="birth != null and birth != '' ">
-            birth = #{birth},
+            `birth` = #{birth},
         </if>
-        <if test="gender != null and gender != '' ">
-            gender = #{gender},
+        <if test="gender != null ">
+            `gender` = #{gender},
         </if>
-        update_time = #{updateTime}
+        `update_time` = #{updateTime}
         WHERE
-        user_id = #{userId}
+        `user_id` = #{userId}
     </update>
 
     <select id="getUserByUserName" parameterType="java.lang.String" resultType="com.sorcery.platform.domain.User"
             resultMap="UserResultMap">
-        SELECT * FROM `t_user` WHERE `user_name` = #{userName};
+        SELECT * FROM `t_user` WHERE `user_name` = #{username};
     </select>
 
     <select id="getUserById" parameterType="java.lang.Long" resultType="com.sorcery.platform.domain.User"
@@ -82,6 +83,10 @@
     <select id="getUserInfoByUserId" parameterType="java.lang.Long" resultType="com.sorcery.platform.domain.UserInfo"
             resultMap="UserInfoResultMap">
         SELECT * FROM `t_user_info` WHERE `user_id` = #{userId};
+    </select>
+
+    <select id="getRefreshTokenByUserId" resultType="java.lang.String">
+        SELECT * FROM `t_refresh_token`WHERE `user_id`=#{userId};
     </select>
 
 </mapper>

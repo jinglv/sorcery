@@ -3,7 +3,7 @@ package com.sorcery.platform.service;
 import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.domain.JenkinsTask;
 import com.sorcery.platform.domain.PageResult;
-import com.sorcery.platform.vo.JenkinsTaskVO;
+import com.sorcery.platform.vo.jenkins.JenkinsTaskVO;
 
 import java.util.Map;
 

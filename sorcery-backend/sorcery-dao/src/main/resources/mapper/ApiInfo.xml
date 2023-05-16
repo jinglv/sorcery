@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sorcery.platform.dao.ApiInfoDAO">
+
+    <resultMap id="ApiInfoResultMap" type="com.sorcery.platform.domain.ApiInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="module_id" jdbcType="INTEGER" property="moduleId"/>
+        <result column="api_name" jdbcType="VARCHAR" property="apiName"/>
+        <result column="api_path" jdbcType="VARCHAR" property="apiPath"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="header" jdbcType="VARCHAR" property="header"/>
+        <result column="params_type" jdbcType="INTEGER" property="paramType"/>
+        <result column="params_body" jdbcType="VARCHAR" property="paramsBody"/>
+        <result column="response" jdbcType="VARCHAR" property="response"/>
+        <result column="assert_type" jdbcType="INTEGER" property="assertType"/>
+        <result column="assert_text" jdbcType="VARCHAR" property="assertText"/>
+        <result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <insert id="addApiInfo" parameterType="com.sorcery.platform.domain.ApiInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO t_apis(`module_id`, `api_name`,
+        `api_path`,`method`,`header`,`params_type`,`params_body`,`response`,`assert_type`,`assert_text`,`is_delete`,
+        `user_id`, `create_time`, `update_time`)
+        VALUES(#{moduleId}, #{apiName}, #{apiPath}, #{method},
+        #{header},#{paramType},#{paramsBody},#{response},#{assertType},#{assertText},#{isDelete}, #{userId},
+        #{createTime}, #{updateTime});
+    </insert>
+
+    <update id="updateApiInfo" parameterType="com.sorcery.platform.domain.ApiInfo">
+        UPDATE `t_apis` SET
+        <if test="apiInfo.moduleId != null">
+            `module_id` = #{apiInfo.moduleId},
+        </if>
+        <if test="apiInfo.apiName != null and apiInfo.apiName != '' ">
+            `api_name` = #{apiInfo.apiName},
+        </if>
+        <if test="apiInfo.apiPath != null and apiInfo.apiPath != '' ">
+            `api_path` = #{apiInfo.apiPath},
+        </if>
+        <if test="apiInfo.method != null and apiInfo.method != '' ">
+            `method` = #{apiInfo.method},
+        </if>
+        <if test="apiInfo.header != null and apiInfo.header != '' ">
+            `header` = #{apiInfo.header},
+        </if>
+        <if test="apiInfo.paramType != null">
+            `params_type` = #{apiInfo.paramType},
+        </if>
+        <if test="apiInfo.paramsBody != null and apiInfo.paramsBody != '' ">
+            `params_body` = #{apiInfo.paramsBody},
+        </if>
+        <if test="apiInfo.response != null and apiInfo.response != '' ">
+            `response` = #{apiInfo.response},
+        </if>
+        <if test="apiInfo.assertType != null">
+            `assert_type` = #{apiInfo.assertType},
+        </if>
+        <if test="apiInfo.assertText != null and apiInfo.assertText != '' ">
+            `assert_text` = #{apiInfo.assertText},
+        </if>
+        <if test="apiInfo.isDelete != null">
+            `is_delete` = #{apiInfo.isDelete},
+        </if>
+        <if test="apiInfo.userId != null">
+            `user_id` = #{apiInfo.userId},
+        </if>
+        `update_time` = #{apiInfo.updateTime}
+        WHERE
+        `id` = #{apiInfoId};
+    </update>
+
+    <select id="getApiInfoById" resultType="com.sorcery.platform.domain.ApiInfo" resultMap="ApiInfoResultMap">
+        SELECT *
+        FROM `t_apis`
+        WHERE `id` = #{apiInfoId} AND `is_delete` = 0;
+    </select>
+
+    <select id="getApiInfoByName" resultType="com.sorcery.platform.domain.ApiInfo" resultMap="ApiInfoResultMap">
+        SELECT *
+        FROM `t_apis`
+        WHERE `api_name` = #{apiInfoName} AND `is_delete` = 0;
+    </select>
+
+    <select id="pageCountApiInfo" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM `t_apis`
+        WHERE `is_delete` = 0;
+    </select>
+
+    <select id="pageApiInfoList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.ApiInfo"
+            resultMap="ApiInfoResultMap">
+        SELECT *
+        FROM `t_apis`
+        WHERE `is_delete` = 0
+        ORDER BY `id` DESC
+        LIMIT #{start}, #{limit};
+    </select>
+
+</mapper>

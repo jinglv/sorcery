@@ -37,10 +37,10 @@ const actions = {
     encrypt.setPublicKey(pubKey)
     const enPassword = encrypt.encrypt(password)
     return new Promise((resolve, reject) => {
-      login({ userName: username.trim(), password: enPassword }).then(response => {
+      login({ username: username.trim(), password: enPassword }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.accessToken)
-        setToken(data.accessToken)
+        commit('SET_TOKEN', data.token)
+        setToken(data.token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -52,15 +52,18 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { data } = response
+        // const { data } = response
+        const data = response
 
-        // if (!data) {
-        //   return reject('Verification failed, please Login again.')
-        // }
+        if (!data) {
+          return reject('Verification failed, please Login again.')
+        }
 
-        const { userName, avatar } = data
+        // const { username, avatar } = data
+        const nick = response.data.userInfo.nick
+        const avatar = response.data.userInfo.avatar
 
-        commit('SET_NAME', userName)
+        commit('SET_NAME', nick)
         commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {

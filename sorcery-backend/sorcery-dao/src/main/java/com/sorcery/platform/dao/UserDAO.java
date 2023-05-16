@@ -62,6 +62,14 @@ public interface UserDAO {
     Integer updateUserInfo(UserInfo userInfo);
 
     /**
+     * 根据userId查询RefreshToken
+     *
+     * @param userId 用户id
+     * @return 查询结果
+     */
+    String getRefreshTokenByUserId(Long userId);
+
+    /**
      * 根据用户id删除refresh toke
      *
      * @param userId 用户id

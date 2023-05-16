@@ -7,7 +7,7 @@ import com.sorcery.platform.domain.JsonResponse;
 import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.service.JenkinsService;
 import com.sorcery.platform.support.UserSupport;
-import com.sorcery.platform.vo.JenkinsInfoVO;
+import com.sorcery.platform.vo.jenkins.JenkinsInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

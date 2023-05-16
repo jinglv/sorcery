@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sorcery.platform.dao.ModuleDAO">
+
+    <resultMap id="ModuleResultMap" type="com.sorcery.platform.domain.Modules">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="module_name" jdbcType="VARCHAR" property="moduleName"/>
+        <result column="module_parent_id" jdbcType="VARCHAR" property="moduleParentId"/>
+        <result column="project_id" jdbcType="VARCHAR" property="projectId"/>
+        <result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!--    <resultMap id="ModuleByProjectMap" type="com.sorcery.platform.domain.Project">-->
+    <!--        <id column="id" jdbcType="INTEGER" property="id"/>-->
+    <!--        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>-->
+    <!--        <result column="description" jdbcType="VARCHAR" property="description"/>-->
+    <!--        <result column="image" jdbcType="VARCHAR" property="image"/>-->
+    <!--        <result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>-->
+    <!--        <result column="user_id" jdbcType="INTEGER" property="userId"/>-->
+    <!--        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>-->
+    <!--        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>-->
+    <!--        <collection property="modules" ofType="com.sorcery.platform.domain.Modules">-->
+    <!--            <id column="id" jdbcType="INTEGER" property="id"/>-->
+    <!--            <result column="module_name" jdbcType="VARCHAR" property="moduleName"/>-->
+    <!--            <result column="module_parent_id" jdbcType="VARCHAR" property="moduleParentId"/>-->
+    <!--            <result column="project_id" jdbcType="VARCHAR" property="projectId"/>-->
+    <!--            <result column="is_delete" jdbcType="VARCHAR" property="isDelete"/>-->
+    <!--            <result column="user_id" jdbcType="INTEGER" property="userId"/>-->
+    <!--            <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>-->
+    <!--            <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>-->
+    <!--        </collection>-->
+    <!--    </resultMap>-->
+
+    <insert id="addModule" parameterType="com.sorcery.platform.domain.Modules" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO t_modules(`module_name`, `module_parent_id`, `project_id`, `is_delete`, `user_id`, `create_time`,
+        `update_time`)
+        VALUES(#{moduleName}, #{moduleParentId}, #{projectId}, #{isDelete}, #{userId}, #{createTime}, #{updateTime});
+    </insert>
+
+    <update id="updateModule" parameterType="com.sorcery.platform.domain.Modules">
+        UPDATE `t_modules` SET
+        <if test="module.moduleName != null and module.moduleName != '' ">
+            `module_name` = #{module.moduleName},
+        </if>
+        <if test="module.moduleParentId != null ">
+            `module_parent_id` = #{module.moduleParentId},
+        </if>
+        <if test="module.projectId != null ">
+            `project_id` = #{module.projectId},
+        </if>
+        <if test="module.isDelete != null">
+            `is_delete` = #{module.isDelete},
+        </if>
+        <if test="module.userId != null">
+            `user_id` = #{module.userId},
+        </if>
+        `update_time` = #{module.updateTime}
+        WHERE
+        `id` = #{moduleId};
+    </update>
+
+    <select id="getModuleById" resultType="com.sorcery.platform.domain.Modules" resultMap="ModuleResultMap">
+        SELECT *
+        FROM `t_modules`
+        WHERE `id` = #{moduleId} AND `is_delete` = 0;
+    </select>
+
+    <select id="getModuleByName" resultType="com.sorcery.platform.domain.Modules" resultMap="ModuleResultMap">
+        SELECT *
+        FROM `t_modules`
+        WHERE `module_name` = #{moduleName} AND `is_delete` = 0;
+    </select>
+
+    <select id="selectModulesByProject" resultType="com.sorcery.platform.domain.Modules" resultMap="ModuleResultMap">
+        SELECT *
+        FROM `t_modules`
+        WHERE `project_id` = #{projectId} AND `is_delete` = 0;
+    </select>
+
+</mapper>

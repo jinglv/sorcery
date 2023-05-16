@@ -1,17 +1,17 @@
 package com.sorcery.platform.service.impl;
 
 import cn.hutool.core.lang.Assert;
-import com.alibaba.fastjson.JSONObject;
-import com.mysql.cj.util.StringUtils;
 import com.sorcery.platform.constant.Constants;
 import com.sorcery.platform.dao.ProjectDAO;
 import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.domain.Project;
 import com.sorcery.platform.exception.ConditionException;
 import com.sorcery.platform.service.ProjectService;
-import com.sorcery.platform.vo.ProjectVO;
+import com.sorcery.platform.vo.project.ProjectSearchVO;
+import com.sorcery.platform.vo.project.ProjectVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,9 +38,9 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addProject(ProjectVO projectVO, String imageUrl, Long userId) {
+    public void addProject(ProjectVO projectVO, Long userId) {
         String projectName = projectVO.getProjectName();
-        if (StringUtils.isNullOrEmpty(projectName)) {
+        if (StringUtils.isBlank(projectName)) {
             throw new ConditionException("项目名称不能为空！");
         }
         Project projectInfo = this.getProjectByName(projectName);
@@ -49,12 +49,13 @@ public class ProjectServiceImpl implements ProjectService {
         }
         Project project = new Project();
         // 如果项目图片为空，设置默认图片
-        if (StringUtils.isNullOrEmpty(imageUrl)) {
-            project.setImage("/images/4d928a0132b4434c922326256664a635.png");
+        if (StringUtils.isBlank(projectVO.getImage())) {
+            project.setImage("static/images/4d928a0132b4434c922326256664a635.png");
+        } else {
+            project.setImage(projectVO.getImage());
         }
         project.setProjectName(projectVO.getProjectName());
         project.setDescription(projectVO.getDescription());
-        project.setImage(imageUrl);
         project.setUserId(userId);
         // 设置项目未删除逻辑
         project.setIsDelete(Constants.DEL_FLAG_ZERO);
@@ -93,19 +94,16 @@ public class ProjectServiceImpl implements ProjectService {
     /**
      * 分页查询项目列表
      *
-     * @param params 分页信息
+     * @param projectSearchVO 查询条件信息
      * @return 项目信息列表
      */
     @Override
-    public PageResult<Project> pageProjectList(JSONObject params) {
-        Integer no = params.getInteger("no");
-        Integer size = params.getInteger("size");
-        params.put("start", (no - 1) * size);
-        params.put("limit", size);
-        Integer total = projectDAO.pageCountProject(params);
+    public PageResult<Project> pageProjectList(Integer pageNum, Integer pageSize, ProjectSearchVO projectSearchVO) {
+        // 根据条件查询总数
+        Integer total = projectDAO.pageCountProject(projectSearchVO);
         List<Project> projectList = new ArrayList<>();
         if (total > 0) {
-            projectList = projectDAO.pageProjectList(params);
+            projectList = projectDAO.pageProjectList(projectSearchVO, (pageNum - 1) * pageSize, pageSize);
         }
         return new PageResult<>(total, projectList);
     }
@@ -115,12 +113,11 @@ public class ProjectServiceImpl implements ProjectService {
      *
      * @param projectId 项目id
      * @param projectVO 项目信息
-     * @param imageUrl  上传图片
      * @param userId    创建人
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateProject(Long projectId, ProjectVO projectVO, String imageUrl, Long userId) {
+    public void updateProject(Long projectId, ProjectVO projectVO, Long userId) {
         // 根据项目id查询项目信息
         Project projectInfo = this.getProjectById(projectId);
         if (projectInfo == null) {
@@ -129,7 +126,7 @@ public class ProjectServiceImpl implements ProjectService {
         // 更新项目信息
         projectInfo.setProjectName(projectVO.getProjectName());
         projectInfo.setDescription(projectVO.getDescription());
-        projectInfo.setImage(imageUrl);
+        projectInfo.setImage(projectVO.getImage());
         projectInfo.setUserId(userId);
         // 设置项目未删除逻辑
         projectInfo.setIsDelete(Constants.DEL_FLAG_ZERO);

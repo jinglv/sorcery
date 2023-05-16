@@ -3,7 +3,7 @@ package com.sorcery.platform.service;
 import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.domain.JenkinsInfo;
 import com.sorcery.platform.domain.PageResult;
-import com.sorcery.platform.vo.JenkinsInfoVO;
+import com.sorcery.platform.vo.jenkins.JenkinsInfoVO;
 
 /**
  * @author jinglv

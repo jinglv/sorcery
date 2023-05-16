@@ -39,4 +39,9 @@ export default {
     padding-right: 15px;
   }
 }
+.el-card-define {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16/9; /**根据屏幕比例设置自适应*/
+}
 </style>

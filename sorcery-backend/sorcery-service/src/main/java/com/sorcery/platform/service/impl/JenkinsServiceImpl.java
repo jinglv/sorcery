@@ -2,16 +2,16 @@ package com.sorcery.platform.service.impl;
 
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson.JSONObject;
-import com.mysql.cj.util.StringUtils;
 import com.sorcery.platform.constant.Constants;
 import com.sorcery.platform.dao.JenkinsDAO;
 import com.sorcery.platform.domain.JenkinsInfo;
 import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.exception.ConditionException;
 import com.sorcery.platform.service.JenkinsService;
-import com.sorcery.platform.vo.JenkinsInfoVO;
+import com.sorcery.platform.vo.jenkins.JenkinsInfoVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +35,7 @@ public class JenkinsServiceImpl implements JenkinsService {
     @Transactional(rollbackFor = Exception.class)
     public void addJenkinsInfo(JenkinsInfoVO jenkinsInfoVO, Long userId) {
         String jenkinsName = jenkinsInfoVO.getJenkinsName();
-        if (StringUtils.isNullOrEmpty(jenkinsName)) {
+        if (StringUtils.isBlank(jenkinsName)) {
             throw new ConditionException("Jenkins名称不能为空！");
         }
         JenkinsInfo jenkinsInfo = this.getJenkinsInfoByName(jenkinsName);

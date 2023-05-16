@@ -1,11 +1,11 @@
 package com.sorcery.platform.dao;
 
 import com.sorcery.platform.domain.Project;
+import com.sorcery.platform.vo.project.ProjectSearchVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author jinglv
@@ -41,18 +41,20 @@ public interface ProjectDAO {
     /**
      * 查询项目信息的总数
      *
-     * @param params 参数
+     * @param params 查询条件参数
      * @return Project
      */
-    Integer pageCountProject(Map<String, Object> params);
+    Integer pageCountProject(@Param("params") ProjectSearchVO params);
 
     /**
      * 查询所有项目信息列表
      *
-     * @param params 参数
+     * @param project  查询条件参数
+     * @param pageNum  分页的每页数量
+     * @param pageSize 分页页数
      * @return Project
      */
-    List<Project> pageProjectList(Map<String, Object> params);
+    List<Project> pageProjectList(@Param("params") ProjectSearchVO project, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
 
     /**
      * 更新项目信息
