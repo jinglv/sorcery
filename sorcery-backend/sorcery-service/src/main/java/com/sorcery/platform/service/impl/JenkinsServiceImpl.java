@@ -1,13 +1,13 @@
 package com.sorcery.platform.service.impl;
 
 import cn.hutool.core.lang.Assert;
-import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.constant.Constants;
 import com.sorcery.platform.dao.JenkinsDAO;
 import com.sorcery.platform.domain.JenkinsInfo;
 import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.exception.ConditionException;
 import com.sorcery.platform.service.JenkinsService;
+import com.sorcery.platform.vo.jenkins.JenkinsInfoSearchVO;
 import com.sorcery.platform.vo.jenkins.JenkinsInfoVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,17 +72,14 @@ public class JenkinsServiceImpl implements JenkinsService {
     }
 
     @Override
-    public PageResult<JenkinsInfo> pageJenkinsInfoList(JSONObject params) {
-        Integer no = params.getInteger("no");
-        Integer size = params.getInteger("size");
-        params.put("start", (no - 1) * size);
-        params.put("limit", size);
-        Integer total = jenkinsDAO.pageCountJenkinsInfo(params);
-        List<JenkinsInfo> projectList = new ArrayList<>();
+    public PageResult<JenkinsInfo> pageJenkinsInfoList(Integer pageNum, Integer pageSize, JenkinsInfoSearchVO jenkinsInfoSearchVO) {
+        // 根据条件查询总数
+        Integer total = jenkinsDAO.pageCountJenkinsInfo(jenkinsInfoSearchVO);
+        List<JenkinsInfo> jenkinsInfoList = new ArrayList<>();
         if (total > 0) {
-            projectList = jenkinsDAO.pageJenkinsInfoList(params);
+            jenkinsInfoList = jenkinsDAO.pageJenkinsInfoList(jenkinsInfoSearchVO, (pageNum - 1) * pageSize, pageSize);
         }
-        return new PageResult<>(total, projectList);
+        return new PageResult<>(total, jenkinsInfoList);
     }
 
     @Override
@@ -119,5 +116,10 @@ public class JenkinsServiceImpl implements JenkinsService {
         jenkinsInfo.setUpdateTime(LocalDateTime.now());
         Integer result = jenkinsDAO.updateJenkinsInfo(jenkinsId, jenkinsInfo);
         Assert.isFalse(result != 1, "删除Jenkins信息失败!");
+    }
+
+    @Override
+    public List<JenkinsInfo> selectAllJenkinsInfo() {
+        return jenkinsDAO.selectAllJenkinsInfo();
     }
 }

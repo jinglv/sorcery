@@ -21,7 +21,7 @@ public class Modules {
     /**
      * 模块名称
      */
-    private String moduleName;
+    private String label;
     /**
      * 模块上级id
      */
@@ -51,5 +51,5 @@ public class Modules {
     /**
      * 子模块信息
      */
-    private List<Modules> childenList;
+    private List<Modules> children;
 }

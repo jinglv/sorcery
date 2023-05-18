@@ -79,4 +79,14 @@ public class ModuleApi {
         return JsonResponse.success(modulesTree);
     }
 
+    @ApiOperation(value = "删除模块信息")
+    @DeleteMapping("/module/{moduleId}")
+    public JsonResponse<String> deleteProject(@PathVariable Long moduleId) {
+        // 预留
+        Long currentUserId = userSupport.getCurrentUserId();
+        log.info("删除模块Id{}", moduleId);
+        moduleService.deleteModule(moduleId);
+        return JsonResponse.success();
+    }
+
 }

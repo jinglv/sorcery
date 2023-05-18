@@ -1,9 +1,13 @@
 package com.sorcery.platform.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.domain.JenkinsInfo;
 import com.sorcery.platform.domain.PageResult;
+import com.sorcery.platform.vo.jenkins.JenkinsInfoSearchVO;
 import com.sorcery.platform.vo.jenkins.JenkinsInfoVO;
+
+import java.util.List;
+
+;
 
 /**
  * @author jinglv
@@ -37,10 +41,12 @@ public interface JenkinsService {
     /**
      * 分页查询Jenkins信息列表
      *
-     * @param params 分页信息
+     * @param jenkinsInfoSearchVO 搜索条件
+     * @param pageNum             页码
+     * @param pageSize            每页数量
      * @return Jenkins信息列表
      */
-    PageResult<JenkinsInfo> pageJenkinsInfoList(JSONObject params);
+    PageResult<JenkinsInfo> pageJenkinsInfoList(Integer pageNum, Integer pageSize, JenkinsInfoSearchVO jenkinsInfoSearchVO);
 
     /**
      * 更新Jenkins信息
@@ -58,4 +64,11 @@ public interface JenkinsService {
      * @param jenkinsId Jenkins id
      */
     void deleteJenkins(Long jenkinsId);
+
+    /**
+     * 查询所有Jenkins信息
+     *
+     * @return JenkinsInfo
+     */
+    List<JenkinsInfo> selectAllJenkinsInfo();
 }

@@ -40,16 +40,16 @@ public class ModuleTreeHelper {
      */
     private static Modules findChildren(Modules modules, List<Modules> modulesList) {
         // 设置当前模块子模块列表为空
-        modules.setChildenList(new ArrayList<>());
+        modules.setChildren(new ArrayList<>());
         // 遍历所有模块列表
         for (Modules module : modulesList) {
             // 判断当前模块的id和模块列表中哪些模块的parentId相同
             if (modules.getId().equals(module.getModuleParentId())) {
-                if (modules.getChildenList() == null) {
-                    modules.setChildenList(new ArrayList<>());
+                if (modules.getChildren() == null) {
+                    modules.setChildren(new ArrayList<>());
                 }
                 // 设置单管菜单的子菜单列表，并进行递归查询
-                modules.getChildenList().add(findChildren(module, modulesList));
+                modules.getChildren().add(findChildren(module, modulesList));
             }
         }
         return modules;

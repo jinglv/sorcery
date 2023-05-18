@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,7 +29,7 @@ import java.util.Objects;
 public class ProjectApi {
 
     private final ProjectService projectService;
-    
+
     private final UserSupport userSupport;
 
     @ApiOperation(value = "新增项目信息")
@@ -93,5 +94,13 @@ public class ProjectApi {
         log.info("删除项目Id{}", projectId);
         projectService.deleteProject(projectId);
         return JsonResponse.success();
+    }
+
+    @ApiOperation(value = "查询所有项目信息")
+    @GetMapping("/projects/all")
+    public JsonResponse<List<Project>> selectAllProjectList() {
+        Long userId = userSupport.getCurrentUserId();
+        List<Project> allProject = projectService.selectAllProjectList();
+        return JsonResponse.success(allProject);
     }
 }

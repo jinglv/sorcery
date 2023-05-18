@@ -1,12 +1,12 @@
 package com.sorcery.platform.api;
 
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.domain.JenkinsInfo;
 import com.sorcery.platform.domain.JsonResponse;
 import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.service.JenkinsService;
 import com.sorcery.platform.support.UserSupport;
+import com.sorcery.platform.vo.jenkins.JenkinsInfoSearchVO;
 import com.sorcery.platform.vo.jenkins.JenkinsInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -31,7 +32,7 @@ public class JenkinsApi {
     private final UserSupport userSupport;
 
     @ApiOperation(value = "新增Jenkins信息")
-    @PostMapping("/jenkins")
+    @PostMapping("/jenkinsInfo")
     public JsonResponse<String> addJenkins(@RequestBody JenkinsInfoVO jenkinsInfoVO) {
         log.info("新增Jenkins信息,请求参数：{}", JSONUtil.parse(jenkinsInfoVO));
         if (Objects.isNull(jenkinsInfoVO)) {
@@ -62,15 +63,15 @@ public class JenkinsApi {
     }
 
     @ApiOperation(value = "分页查询Jenkins信息列表")
-    @GetMapping("/jenkins")
-    public JsonResponse<PageResult<JenkinsInfo>> pageJenkinsInfoList(@RequestParam Integer no, @RequestParam Integer size) {
+    @PostMapping("/jenkins")
+    public JsonResponse<PageResult<JenkinsInfo>> pageJenkinsInfoList(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestBody JenkinsInfoSearchVO jenkinsInfoSearchVO) {
+        log.info("Jenkins信息条件查询请求参数：{} ", JSONUtil.parse(jenkinsInfoSearchVO));
+        if (Objects.isNull(jenkinsInfoSearchVO)) {
+            return JsonResponse.fail();
+        }
         Long userId = userSupport.getCurrentUserId();
-        JSONObject params = new JSONObject();
-        params.put("no", no);
-        params.put("size", size);
-        params.put("userId", userId);
-        PageResult<JenkinsInfo> projectPageResult = jenkinsService.pageJenkinsInfoList(params);
-        return JsonResponse.success(projectPageResult);
+        PageResult<JenkinsInfo> jenkinsPageResult = jenkinsService.pageJenkinsInfoList(pageNum, pageSize, jenkinsInfoSearchVO);
+        return JsonResponse.success(jenkinsPageResult);
     }
 
     @ApiOperation(value = "更新Jenkins信息")
@@ -92,5 +93,11 @@ public class JenkinsApi {
         log.info("删除JenkinsId{}", jenkinsId);
         jenkinsService.deleteJenkins(jenkinsId);
         return JsonResponse.success();
+    }
+
+    @ApiOperation(value = "查询所有Jenkins信息")
+    @GetMapping("/jenkins/all")
+    public JsonResponse<List<JenkinsInfo>> selectAllJenkinsInfo() {
+        return JsonResponse.success(jenkinsService.selectAllJenkinsInfo());
     }
 }

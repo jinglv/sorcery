@@ -1,13 +1,13 @@
 package com.sorcery.platform.api;
 
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.domain.JenkinsTask;
 import com.sorcery.platform.domain.JsonResponse;
 import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.service.JenkinsTaskService;
 import com.sorcery.platform.support.UserSupport;
 import com.sorcery.platform.utils.TokenUtil;
+import com.sorcery.platform.vo.jenkins.JenkinsTaskSearchVO;
 import com.sorcery.platform.vo.jenkins.JenkinsTaskStatusVO;
 import com.sorcery.platform.vo.jenkins.JenkinsTaskVO;
 import io.swagger.annotations.Api;
@@ -65,15 +65,15 @@ public class JenkinsTaskApi {
     }
 
     @ApiOperation(value = "分页查询Jenkins任务信息列表")
-    @GetMapping("/tasks")
-    public JsonResponse<PageResult<JenkinsTask>> pageJenkinsTaskInfoList(@RequestParam Integer no, @RequestParam Integer size) {
+    @PostMapping("/tasks")
+    public JsonResponse<PageResult<JenkinsTask>> pageJenkinsTaskInfoList(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @RequestBody JenkinsTaskSearchVO jenkinsTaskSearchVO) {
+        log.info("Jenkins任务信息条件查询请求参数：{} ", JSONUtil.parse(jenkinsTaskSearchVO));
+        if (Objects.isNull(jenkinsTaskSearchVO)) {
+            return JsonResponse.fail();
+        }
         Long userId = userSupport.getCurrentUserId();
-        JSONObject params = new JSONObject();
-        params.put("no", no);
-        params.put("size", size);
-        params.put("userId", userId);
-        PageResult<JenkinsTask> projectPageResult = jenkinsTaskService.pageJenkinsTaskList(params);
-        return JsonResponse.success(projectPageResult);
+        PageResult<JenkinsTask> jenkinsPageResult = jenkinsTaskService.pageJenkinsTaskList(pageNum, pageSize, jenkinsTaskSearchVO);
+        return JsonResponse.success(jenkinsPageResult);
     }
 
     @ApiOperation(value = "更新Jenkins任务信息")

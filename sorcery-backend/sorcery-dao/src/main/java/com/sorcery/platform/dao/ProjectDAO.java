@@ -47,7 +47,7 @@ public interface ProjectDAO {
     Integer pageCountProject(@Param("params") ProjectSearchVO params);
 
     /**
-     * 查询所有项目信息列表
+     * 分页查询条件项目信息列表
      *
      * @param project  查询条件参数
      * @param pageNum  分页的每页数量
@@ -55,6 +55,13 @@ public interface ProjectDAO {
      * @return Project
      */
     List<Project> pageProjectList(@Param("params") ProjectSearchVO project, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+
+    /**
+     * 查询所有项目信息
+     *
+     * @return Project
+     */
+    List<Project> selectAllProjectList();
 
     /**
      * 更新项目信息

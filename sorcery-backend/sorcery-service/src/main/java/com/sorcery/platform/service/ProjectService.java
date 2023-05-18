@@ -5,6 +5,8 @@ import com.sorcery.platform.domain.Project;
 import com.sorcery.platform.vo.project.ProjectSearchVO;
 import com.sorcery.platform.vo.project.ProjectVO;
 
+import java.util.List;
+
 /**
  * @author jinglv
  * @date 2023/3/29 14:59
@@ -37,7 +39,7 @@ public interface ProjectService {
     /**
      * 分页查询项目列表
      *
-     * @param projectSearchVO 分页信息
+     * @param projectSearchVO 项目搜索信息
      * @param pageNum         页码
      * @param pageSize        每页数量
      * @return 项目信息列表
@@ -53,7 +55,6 @@ public interface ProjectService {
      */
     void updateProject(Long projectId, ProjectVO projectVO, Long userId);
 
-
     /**
      * 删除项目
      *
@@ -61,4 +62,10 @@ public interface ProjectService {
      */
     void deleteProject(Long projectId);
 
+    /**
+     * 查询所有项目信息
+     *
+     * @return Project
+     */
+    List<Project> selectAllProjectList();
 }

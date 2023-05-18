@@ -49,7 +49,7 @@ public class ModuleServiceImpl implements ModuleService {
             throw new ConditionException("项目信息不存在！");
         }
         Modules modules = new Modules();
-        modules.setModuleName(moduleVO.getModuleName());
+        modules.setLabel(moduleVO.getModuleName());
         modules.setModuleParentId(moduleVO.getModuleParentId());
         modules.setProjectId(moduleVO.getProjectId());
         modules.setUserId(userId);
@@ -84,7 +84,7 @@ public class ModuleServiceImpl implements ModuleService {
             throw new ConditionException("根据模块Id{" + moduleId + "}未查到模块信息！");
         }
         // 更新模块信息
-        moduleInfo.setModuleName(moduleVO.getModuleName());
+        moduleInfo.setLabel(moduleVO.getModuleName());
         moduleInfo.setModuleParentId(moduleVO.getModuleParentId());
         moduleInfo.setProjectId(moduleVO.getProjectId());
         moduleInfo.setUserId(userId);

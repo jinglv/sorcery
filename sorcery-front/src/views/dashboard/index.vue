@@ -1,9 +1,9 @@
 <template>
   <div class="dashboard-container" style="height: 800px">
     <div class="dashboard-text">欢迎: {{ name }}~</div>
-    <div class="dashboard-backgroud">
+    <!-- <div class="dashboard-backgroud">
       <img src="../../assets/background.png" style="height: 500px; width: 600px;">
-    </div>
+    </div> -->
   </div>
 </template>
 

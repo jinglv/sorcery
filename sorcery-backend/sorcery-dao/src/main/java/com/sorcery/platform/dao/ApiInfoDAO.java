@@ -1,11 +1,11 @@
 package com.sorcery.platform.dao;
 
 import com.sorcery.platform.domain.ApiInfo;
+import com.sorcery.platform.vo.apis.ApiInfoSearchVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author jinglv
@@ -39,20 +39,24 @@ public interface ApiInfoDAO {
     ApiInfo getApiInfoByName(String apiInfoName);
 
     /**
-     * 查询接口信息的总数
+     * 查询模块下接口信息的总数
      *
-     * @param params 参数
+     * @param moduleId 模块id
+     * @param params   查询条件参数
      * @return 接口信息
      */
-    Integer pageCountApiInfo(Map<String, Object> params);
+    Integer pageCountApiInfo(@Param("moduleId") Long moduleId, ApiInfoSearchVO params);
 
     /**
-     * 查询所有接口信息列表
+     * 分页查询指定模块下所有接口信息列表
      *
-     * @param params 参数
+     * @param moduleId        模块id
+     * @param apiInfoSearchVO 查询
+     * @param pageNum         分页的每页数量
+     * @param pageSize        分页页数
      * @return 接口信息
      */
-    List<ApiInfo> pageApiInfoList(Map<String, Object> params);
+    List<ApiInfo> pageApiInfoList(@Param("moduleId") Long moduleId, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("params") ApiInfoSearchVO apiInfoSearchVO);
 
     /**
      * 更新接口信息

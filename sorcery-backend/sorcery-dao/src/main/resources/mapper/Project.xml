@@ -77,4 +77,10 @@
         LIMIT #{pageNum}, #{pageSize};
     </select>
 
+    <select id="selectAllProjectList" resultType="com.sorcery.platform.domain.Project" resultMap="ProjectResultMap">
+        SELECT *
+        FROM `t_projects`
+        WHERE `is_delete` = 0;
+    </select>
+
 </mapper>

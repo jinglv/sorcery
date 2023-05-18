@@ -161,9 +161,10 @@ export default {
           center: true
         }).then(() => {
           if (resp.code === '00000') {
+            this.req.pageNum = 1
             this.initProjectList()
           } else {
-            this.$message.error(resp.error.data)
+            this.$message.error(resp.msg)
           }
           this.$message({
             type: 'success',
@@ -185,7 +186,7 @@ export default {
   width: 100px;
   height: 100px;
   position: absolute;
-  right: 150px;
-  bottom: 0px;
+  right: 10%;
+  bottom: -3%;
 }
 </style>

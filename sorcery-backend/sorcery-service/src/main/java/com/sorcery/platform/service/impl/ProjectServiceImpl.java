@@ -153,4 +153,9 @@ public class ProjectServiceImpl implements ProjectService {
         Integer result = projectDAO.updateProject(projectId, projectInfo);
         Assert.isFalse(result != 1, "删除项目失败!");
     }
+
+    @Override
+    public List<Project> selectAllProjectList() {
+        return projectDAO.selectAllProjectList();
+    }
 }

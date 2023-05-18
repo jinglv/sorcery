@@ -88,16 +88,25 @@
     <select id="pageCountApiInfo" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT COUNT(1)
         FROM `t_apis`
-        WHERE `is_delete` = 0;
+        <where>
+            `module_id`=#{moduleId} AND `is_delete` = 0
+            <if test="params.apiName != null and params.apiName != ''">
+                AND `api_name` LIKE CONCAT('%', #{params.apiName}, '%')
+            </if>
+        </where>
     </select>
 
-    <select id="pageApiInfoList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.ApiInfo"
-            resultMap="ApiInfoResultMap">
+    <select id="pageApiInfoList" resultType="com.sorcery.platform.domain.ApiInfo" resultMap="ApiInfoResultMap">
         SELECT *
         FROM `t_apis`
-        WHERE `is_delete` = 0
+        <where>
+            `module_id`=#{moduleId} AND `is_delete` = 0
+            <if test="params.apiName != null and params.apiName != ''">
+                AND `api_name` LIKE CONCAT('%', #{params.apiName}, '%')
+            </if>
+        </where>
         ORDER BY `id` DESC
-        LIMIT #{start}, #{limit};
+        LIMIT #{pageNum}, #{pageSize};
     </select>
 
 </mapper>

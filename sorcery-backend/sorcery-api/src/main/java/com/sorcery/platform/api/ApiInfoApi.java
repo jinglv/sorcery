@@ -1,12 +1,12 @@
 package com.sorcery.platform.api;
 
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.domain.ApiInfo;
 import com.sorcery.platform.domain.JsonResponse;
 import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.service.ApiInfoService;
 import com.sorcery.platform.support.UserSupport;
+import com.sorcery.platform.vo.apis.ApiInfoSearchVO;
 import com.sorcery.platform.vo.apis.ApiInfoVO;
 import com.sorcery.platform.vo.apis.ApiRunVO;
 import io.swagger.annotations.Api;
@@ -62,16 +62,16 @@ public class ApiInfoApi {
         return JsonResponse.success(apiInfo);
     }
 
-    @ApiOperation(value = "分页查询接口信息列表")
-    @GetMapping("/apis")
-    public JsonResponse<PageResult<ApiInfo>> pageJenkinsInfoList(@RequestParam Integer no, @RequestParam Integer size) {
+    @ApiOperation(value = "分页查询模块下接口信息列表")
+    @PostMapping("/apis/{moduleId}")
+    public JsonResponse<PageResult<ApiInfo>> pageJenkinsInfoList(@RequestParam Integer pageNum, @RequestParam Integer pageSize, @PathVariable Long moduleId, @RequestBody ApiInfoSearchVO apiInfoSearchVO) {
+        log.info("模块id：{}, 接口条件查询请求参数：{} ", moduleId, JSONUtil.parse(apiInfoSearchVO));
+        if (Objects.isNull(apiInfoSearchVO)) {
+            return JsonResponse.fail();
+        }
         Long userId = userSupport.getCurrentUserId();
-        JSONObject params = new JSONObject();
-        params.put("no", no);
-        params.put("size", size);
-        params.put("userId", userId);
-        PageResult<ApiInfo> projectPageResult = apiInfoService.pageApiInfoList(params);
-        return JsonResponse.success(projectPageResult);
+        PageResult<ApiInfo> apiInfoPageResult = apiInfoService.pageApiInfoList(pageNum, pageSize, moduleId, apiInfoSearchVO);
+        return JsonResponse.success(apiInfoPageResult);
     }
 
     @ApiOperation(value = "更新接口信息")

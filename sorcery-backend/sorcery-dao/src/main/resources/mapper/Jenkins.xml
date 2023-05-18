@@ -66,16 +66,34 @@
     <select id="pageCountJenkinsInfo" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT COUNT(1)
         FROM `t_jenkins`
-        WHERE `is_delete` = 0;
+        WHERE `is_delete` = 0
+        <if test="params.jenkinsName != null and params.jenkinsName != '' ">
+            AND `jenkins_name` LIKE CONCAT('%', #{params.jenkinsName}, '%')
+        </if>
+        <if test="params.jenkinsUrl != null and params.jenkinsUrl != '' ">
+            AND `jenkins_url` LIKE CONCAT('%', #{params.jenkinsUrl}, '%')
+        </if>
     </select>
 
-    <select id="pageJenkinsInfoList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.JenkinsInfo"
+    <select id="pageJenkinsInfoList" resultType="com.sorcery.platform.domain.JenkinsInfo"
             resultMap="JenkinsInfoResultMap">
         SELECT *
         FROM `t_jenkins`
-        WHERE `is_delete` = 0
+        <where>
+            `is_delete` = 0
+            <if test="params.jenkinsName != null and params.jenkinsName != '' ">
+                AND `jenkins_name` LIKE CONCAT('%', #{params.jenkinsName}, '%')
+            </if>
+            <if test="params.jenkinsUrl != null and params.jenkinsUrl != '' ">
+                AND `jenkins_url` LIKE CONCAT('%', #{params.jenkinsUrl}, '%')
+            </if>
+        </where>
         ORDER BY `id` DESC
-        LIMIT #{start}, #{limit};
+        LIMIT #{pageNum}, #{pageSize};
+    </select>
+    <select id="selectAllJenkinsInfo" resultType="com.sorcery.platform.domain.JenkinsInfo"
+            resultMap="JenkinsInfoResultMap">
+        SELECT * FROM `t_jenkins` WHERE `is_delete` = 0;
     </select>
 
 </mapper>

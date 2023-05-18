@@ -1,8 +1,8 @@
 package com.sorcery.platform.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.domain.ApiInfo;
 import com.sorcery.platform.domain.PageResult;
+import com.sorcery.platform.vo.apis.ApiInfoSearchVO;
 import com.sorcery.platform.vo.apis.ApiInfoVO;
 import com.sorcery.platform.vo.apis.ApiRunVO;
 
@@ -38,10 +38,13 @@ public interface ApiInfoService {
     /**
      * 分页查询接口信息列表
      *
-     * @param params 分页信息
+     * @param moduleId        模块id
+     * @param apiInfoSearchVO 接口搜索信息
+     * @param pageNum         页码
+     * @param pageSize        每页数量
      * @return 接口信息列表
      */
-    PageResult<ApiInfo> pageApiInfoList(JSONObject params);
+    PageResult<ApiInfo> pageApiInfoList(Integer pageNum, Integer pageSize, Long moduleId, ApiInfoSearchVO apiInfoSearchVO);
 
     /**
      * 更新接口信息

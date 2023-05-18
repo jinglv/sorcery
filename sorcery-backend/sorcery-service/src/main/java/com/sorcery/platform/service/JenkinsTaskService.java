@@ -1,8 +1,8 @@
 package com.sorcery.platform.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.domain.JenkinsTask;
 import com.sorcery.platform.domain.PageResult;
+import com.sorcery.platform.vo.jenkins.JenkinsTaskSearchVO;
 import com.sorcery.platform.vo.jenkins.JenkinsTaskVO;
 
 import java.util.Map;
@@ -40,10 +40,12 @@ public interface JenkinsTaskService {
     /**
      * 分页查询Jenkins任务信息列表
      *
-     * @param params 分页信息
-     * @return Jenkins信息列表
+     * @param jenkinsTaskSearchVO 搜索条件
+     * @param pageNum             页码
+     * @param pageSize            每页数量
+     * @return Jenkins任务信息列表
      */
-    PageResult<JenkinsTask> pageJenkinsTaskList(JSONObject params);
+    PageResult<JenkinsTask> pageJenkinsTaskList(Integer pageNum, Integer pageSize, JenkinsTaskSearchVO jenkinsTaskSearchVO);
 
     /**
      * 更新Jenkins任务信息

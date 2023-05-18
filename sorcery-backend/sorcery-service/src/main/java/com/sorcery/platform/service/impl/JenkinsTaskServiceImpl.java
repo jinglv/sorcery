@@ -1,7 +1,6 @@
 package com.sorcery.platform.service.impl;
 
 import cn.hutool.core.lang.Assert;
-import com.alibaba.fastjson.JSONObject;
 import com.sorcery.platform.constant.Constants;
 import com.sorcery.platform.dao.JenkinsTaskDAO;
 import com.sorcery.platform.domain.JenkinsInfo;
@@ -11,6 +10,7 @@ import com.sorcery.platform.exception.ConditionException;
 import com.sorcery.platform.jenkins.JenkinsClient;
 import com.sorcery.platform.service.JenkinsService;
 import com.sorcery.platform.service.JenkinsTaskService;
+import com.sorcery.platform.vo.jenkins.JenkinsTaskSearchVO;
 import com.sorcery.platform.vo.jenkins.JenkinsTaskVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -85,17 +85,19 @@ public class JenkinsTaskServiceImpl implements JenkinsTaskService {
     }
 
     @Override
-    public PageResult<JenkinsTask> pageJenkinsTaskList(JSONObject params) {
-        Integer no = params.getInteger("no");
-        Integer size = params.getInteger("size");
-        params.put("start", (no - 1) * size);
-        params.put("limit", size);
-        Integer total = jenkinsTaskDAO.pageCountJenkinsTask(params);
-        List<JenkinsTask> projectList = new ArrayList<>();
+    public PageResult<JenkinsTask> pageJenkinsTaskList(Integer pageNum, Integer pageSize, JenkinsTaskSearchVO jenkinsTaskSearchVO) {
+        // 根据条件查询总数
+        Integer total = jenkinsTaskDAO.pageCountJenkinsTask(jenkinsTaskSearchVO);
+        List<JenkinsTask> jenkinsTaskList = new ArrayList<>();
         if (total > 0) {
-            projectList = jenkinsTaskDAO.pageJenkinsTaskList(params);
+            jenkinsTaskList = jenkinsTaskDAO.pageJenkinsTaskList(jenkinsTaskSearchVO, (pageNum - 1) * pageSize, pageSize);
+            for (JenkinsTask jenkinsTask : jenkinsTaskList) {
+                Long jenkinsId = jenkinsTask.getJenkinsId();
+                JenkinsInfo jenkinsInfo = jenkinsService.getJenkinsInfoById(jenkinsId);
+                jenkinsTask.setJenkinsName(jenkinsInfo.getJenkinsName());
+            }
         }
-        return new PageResult<>(total, projectList);
+        return new PageResult<>(total, jenkinsTaskList);
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.sorcery.platform.service.impl;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.text.CharSequenceUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.mysql.cj.util.StringUtils;
 import com.sorcery.platform.constant.ApiConstants;
 import com.sorcery.platform.constant.Constants;
@@ -13,6 +12,7 @@ import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.exception.ConditionException;
 import com.sorcery.platform.service.ApiInfoService;
 import com.sorcery.platform.utils.JsonUtil;
+import com.sorcery.platform.vo.apis.ApiInfoSearchVO;
 import com.sorcery.platform.vo.apis.ApiInfoVO;
 import com.sorcery.platform.vo.apis.ApiRunVO;
 import io.restassured.RestAssured;
@@ -81,17 +81,14 @@ public class ApiInfoServiceImpl implements ApiInfoService {
     }
 
     @Override
-    public PageResult<ApiInfo> pageApiInfoList(JSONObject params) {
-        Integer no = params.getInteger("no");
-        Integer size = params.getInteger("size");
-        params.put("start", (no - 1) * size);
-        params.put("limit", size);
-        Integer total = apiInfoDAO.pageCountApiInfo(params);
-        List<ApiInfo> apiInfoList = new ArrayList<>();
+    public PageResult<ApiInfo> pageApiInfoList(Integer pageNum, Integer pageSize, Long moduleId, ApiInfoSearchVO apiInfoSearchVO) {
+        // 根据条件查询总数
+        Integer total = apiInfoDAO.pageCountApiInfo(moduleId, apiInfoSearchVO);
+        List<ApiInfo> apiInfotList = new ArrayList<>();
         if (total > 0) {
-            apiInfoList = apiInfoDAO.pageApiInfoList(params);
+            apiInfotList = apiInfoDAO.pageApiInfoList(moduleId, (pageNum - 1) * pageSize, pageSize, apiInfoSearchVO);
         }
-        return new PageResult<>(total, apiInfoList);
+        return new PageResult<>(total, apiInfotList);
     }
 
     @Override

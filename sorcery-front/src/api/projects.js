@@ -10,6 +10,13 @@ export function projectList(params, data) {
   })
 }
 
+export function projectAllList() {
+  return request({
+    url: '/api/v1/projects/all',
+    method: 'get'
+  })
+}
+
 export function createProject(data) {
   return request({
     url: '/api/v1/project',

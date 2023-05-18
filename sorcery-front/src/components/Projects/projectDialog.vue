@@ -35,10 +35,10 @@
       label-width="100px"
       class="demo-ruleForm"
     >
-      <el-form-item label="项目名称" prop="name">
+      <el-form-item label="项目名称" prop="projectName">
         <el-input v-model="projectForm.projectName" />
       </el-form-item>
-      <el-form-item label="项目描述" prop="desc">
+      <el-form-item label="项目描述" prop="description">
         <el-input v-model="projectForm.description" type="textarea" />
       </el-form-item>
       <el-form-item label="图片" prop="desc">
@@ -91,7 +91,6 @@ export default ({
     return {
       dialogVisible: true,
       showTitle: '',
-      updateURL: '',
       projectForm: {
         // 项目名称
         projectName: '',
@@ -135,7 +134,7 @@ export default ({
                 this.closeDialog()
                 this.$message.success('项目创建成功！')
               } else {
-                this.$message.error(resp.data)
+                this.$message.error(resp.msg)
               }
             })
           } else if (this.title === 'edit') {

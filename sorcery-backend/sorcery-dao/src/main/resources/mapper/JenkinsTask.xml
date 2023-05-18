@@ -76,15 +76,37 @@
 
     <select id="pageCountJenkinsTask" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT COUNT(1)
-        FROM `t_jenkins_task`;
+        FROM `t_jenkins_task`
+        <where>
+            <if test="params.jenkinsTaskName != null and params.jenkinsTaskName != '' ">
+                `jenkins_task_name` LIKE CONCAT('%', #{params.jenkinsTaskName}, '%')
+            </if>
+            <if test="params.jenkinsJobName != null and params.jenkinsJobName != '' ">
+                AND `jenkins_job_name` LIKE CONCAT('%', #{params.jenkinsJobName}, '%')
+            </if>
+            <if test="params.jenkinsId != null">
+                AND `jenkins_id` = #{params.jenkinsId}
+            </if>
+        </where>
     </select>
 
     <select id="pageJenkinsTaskList" parameterType="java.util.Map" resultType="com.sorcery.platform.domain.JenkinsTask"
             resultMap="JenkinsTaskResultMap">
         SELECT *
         FROM `t_jenkins_task`
+        <where>
+            <if test="params.jenkinsTaskName != null and params.jenkinsTaskName != '' ">
+                `jenkins_task_name` LIKE CONCAT('%', #{params.jenkinsTaskName}, '%')
+            </if>
+            <if test="params.jenkinsJobName != null and params.jenkinsJobName != '' ">
+                AND `jenkins_job_name` LIKE CONCAT('%', #{params.jenkinsJobName}, '%')
+            </if>
+            <if test="params.jenkinsId != null">
+                AND `jenkins_id` = #{params.jenkinsId}
+            </if>
+        </where>
         ORDER BY `id` DESC
-        LIMIT #{start}, #{limit};
+        LIMIT #{pageNum}, #{pageSize};
     </select>
 
 </mapper>
