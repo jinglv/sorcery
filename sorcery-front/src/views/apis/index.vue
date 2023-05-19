@@ -90,7 +90,7 @@
             background
             :total="total"
             :page-size="req.pageSize"
-            layout="prev, pager, next"
+            layout="total, prev, pager, next"
             @current-change="handleCurrentChange"
           />
         </div>

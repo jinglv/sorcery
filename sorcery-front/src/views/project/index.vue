@@ -5,7 +5,7 @@
       <el-button class="filter-item" icon="el-icon-delete" @click="clearSearch()">重置</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="initProjectList()">搜索</el-button>
     </div>
-    <div class="project-list" style="margin-top: 10px;">
+    <div class="project-add" style="margin-top: 10px;">
       <el-button class="filter-item" type="primary" icon="el-icon-circle-plus-outline" @click="showDialog()">创建</el-button>
     </div>
     <div
@@ -58,7 +58,7 @@
     <div class="pagination-container">
       <el-pagination
         background
-        layout="prev, pager, next"
+        layout="total, prev, pager, next"
         :page-size="req.pageSize"
         :total="total"
         @current-change="handleCurrentChange"
