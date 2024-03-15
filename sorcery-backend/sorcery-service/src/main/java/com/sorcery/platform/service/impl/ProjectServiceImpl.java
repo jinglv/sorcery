@@ -139,10 +139,11 @@ public class ProjectServiceImpl implements ProjectService {
      * 删除项目
      *
      * @param projectId 项目id
+     * @param userId    删除人
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteProject(Long projectId) {
+    public void deleteProject(Long projectId, Long userId) {
         // 根据项目id查询项目信息
         Project projectInfo = this.getProjectById(projectId);
         if (projectInfo == null) {
@@ -150,10 +151,16 @@ public class ProjectServiceImpl implements ProjectService {
         }
         projectInfo.setIsDelete(Constants.DEL_FLAG_ONE);
         projectInfo.setUpdateTime(LocalDateTime.now());
+        projectInfo.setUserId(userId);
         Integer result = projectDAO.updateProject(projectId, projectInfo);
         Assert.isFalse(result != 1, "删除项目失败!");
     }
 
+    /**
+     * 查询所有项目信息
+     *
+     * @return Projects {@link Project}
+     */
     @Override
     public List<Project> selectAllProjectList() {
         return projectDAO.selectAllProjectList();

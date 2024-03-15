@@ -48,8 +48,6 @@ public class JenkinsTaskApi {
     @GetMapping("/task/{jenkinsTaskId}")
     public JsonResponse<JenkinsTask> getJenkinsInfoById(@PathVariable Long jenkinsTaskId) {
         log.info("根据Jenkins任务Id查询Jenkins任务信息，Jenkins任务Id:{}", jenkinsTaskId);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         JenkinsTask jenkinsTask = jenkinsTaskService.getJenkinsTaskById(jenkinsTaskId);
         return JsonResponse.success(jenkinsTask);
     }
@@ -58,8 +56,6 @@ public class JenkinsTaskApi {
     @GetMapping("/task/name/{jenkinsTaskName}")
     public JsonResponse<JenkinsTask> getProjectInfoByName(@PathVariable String jenkinsTaskName) {
         log.info("根据Jenkins任务名称查询Jenkins任务信息，Jenkins任务名称:{}", jenkinsTaskName);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         JenkinsTask jenkinsTask = jenkinsTaskService.getJenkinsTaskByName(jenkinsTaskName);
         return JsonResponse.success(jenkinsTask);
     }
@@ -71,7 +67,6 @@ public class JenkinsTaskApi {
         if (Objects.isNull(jenkinsTaskSearchVO)) {
             return JsonResponse.fail();
         }
-        Long userId = userSupport.getCurrentUserId();
         PageResult<JenkinsTask> jenkinsPageResult = jenkinsTaskService.pageJenkinsTaskList(pageNum, pageSize, jenkinsTaskSearchVO);
         return JsonResponse.success(jenkinsPageResult);
     }

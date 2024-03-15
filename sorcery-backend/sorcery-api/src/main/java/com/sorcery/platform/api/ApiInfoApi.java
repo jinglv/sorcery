@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.sorcery.platform.domain.ApiInfo;
 import com.sorcery.platform.domain.JsonResponse;
 import com.sorcery.platform.domain.PageResult;
+import com.sorcery.platform.domain.ResponseInfo;
 import com.sorcery.platform.service.ApiInfoService;
 import com.sorcery.platform.support.UserSupport;
 import com.sorcery.platform.vo.apis.ApiInfoSearchVO;
@@ -46,8 +47,6 @@ public class ApiInfoApi {
     @GetMapping("/apis/{apiInfoId}")
     public JsonResponse<ApiInfo> getApiInfoInfoById(@PathVariable Long apiInfoId) {
         log.info("根据ApiInfo Id查询接口信息，ApiInfo Id:{}", apiInfoId);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         ApiInfo apiInfo = apiInfoService.getApiInfoById(apiInfoId);
         return JsonResponse.success(apiInfo);
     }
@@ -56,8 +55,6 @@ public class ApiInfoApi {
     @GetMapping("/apis/name/{apiInfoName}")
     public JsonResponse<ApiInfo> getApiInfoByName(@PathVariable String apiInfoName) {
         log.info("根据ApiInfo名称查询Jenkins信息，ApiInfo Name:{}", apiInfoName);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         ApiInfo apiInfo = apiInfoService.getApiInfoByName(apiInfoName);
         return JsonResponse.success(apiInfo);
     }
@@ -69,7 +66,6 @@ public class ApiInfoApi {
         if (Objects.isNull(apiInfoSearchVO)) {
             return JsonResponse.fail();
         }
-        Long userId = userSupport.getCurrentUserId();
         PageResult<ApiInfo> apiInfoPageResult = apiInfoService.pageApiInfoList(pageNum, pageSize, moduleId, apiInfoSearchVO);
         return JsonResponse.success(apiInfoPageResult);
     }
@@ -91,17 +87,15 @@ public class ApiInfoApi {
         // 预留
         Long currentUserId = userSupport.getCurrentUserId();
         log.info("删除接口信息：{}", apiInfoId);
-        apiInfoService.deleteApiInfo(apiInfoId);
+        apiInfoService.deleteApiInfo(apiInfoId, currentUserId);
         return JsonResponse.success();
     }
 
     @ApiOperation(value = "执行接口")
     @PostMapping("/apis/run")
-    public JsonResponse<String> run(@RequestBody ApiRunVO apiRunVO) {
+    public JsonResponse<ResponseInfo> run(@RequestBody ApiRunVO apiRunVO) {
         log.info("接口请求参数：{}", JSONUtil.parse(apiRunVO));
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
-        String result = apiInfoService.run(apiRunVO);
+        ResponseInfo result = apiInfoService.run(apiRunVO);
         return JsonResponse.success(result);
     }
 }

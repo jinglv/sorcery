@@ -98,9 +98,15 @@ public class ApiExtractServiceImpl implements ApiExtractService {
         Assert.isFalse(result != 1, "接口断言信息更新失败!");
     }
 
+    /**
+     * 删除接口信息
+     *
+     * @param apiExtractId 接口断言信息主键id
+     * @param userId       删除人
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteApiExtract(Long apiExtractId) {
+    public void deleteApiExtract(Long apiExtractId, Long userId) {
         // 根据Jenkins id查询项目信息
         ApiExtract apiExtract = this.getApiExtractById(apiExtractId);
         if (apiExtract == null) {
@@ -108,6 +114,7 @@ public class ApiExtractServiceImpl implements ApiExtractService {
         }
         apiExtract.setIsDelete(Constants.DEL_FLAG_ONE);
         apiExtract.setUpdateTime(LocalDateTime.now());
+        apiExtract.setUserId(userId);
         Integer result = apiExtractDAO.updateApiExtract(apiExtractId, apiExtract);
         Assert.isFalse(result != 1, "删除接口断言信息失败!");
     }

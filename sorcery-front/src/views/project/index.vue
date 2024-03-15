@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import ProjectDialog from '@/components/Projects/projectDialog.vue'
+import ProjectDialog from '@/views/project/components/projectDialog.vue'
 import { projectList, deleteProject } from '@/api/projects'
 
 export default {

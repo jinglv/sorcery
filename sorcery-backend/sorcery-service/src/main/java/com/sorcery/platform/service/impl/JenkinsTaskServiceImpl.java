@@ -121,6 +121,11 @@ public class JenkinsTaskServiceImpl implements JenkinsTaskService {
         Assert.isFalse(result != 1, "Jenkins任务信息更新失败!");
     }
 
+    /**
+     * 删除Jenkins任务信息
+     *
+     * @param jenkinsTaskId Jenkins任务id
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteJenkinsTask(Long jenkinsTaskId) {

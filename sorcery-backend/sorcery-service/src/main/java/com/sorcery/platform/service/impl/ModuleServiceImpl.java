@@ -95,9 +95,15 @@ public class ModuleServiceImpl implements ModuleService {
         Assert.isFalse(result != 1, "更新模块失败!");
     }
 
+    /**
+     * 删除模块
+     *
+     * @param moduleId 模块id
+     * @param userId   删除人
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteModule(Long moduleId) {
+    public void deleteModule(Long moduleId, Long userId) {
         // 根据模块id查询项目信息
         Modules moduleInfo = this.getModuleById(moduleId);
         if (moduleInfo == null) {
@@ -105,6 +111,7 @@ public class ModuleServiceImpl implements ModuleService {
         }
         moduleInfo.setIsDelete(Constants.DEL_FLAG_ONE);
         moduleInfo.setUpdateTime(LocalDateTime.now());
+        moduleInfo.setUserId(userId);
         Integer result = moduleDAO.updateModule(moduleId, moduleInfo);
         Assert.isFalse(result != 1, "删除模块失败!");
     }

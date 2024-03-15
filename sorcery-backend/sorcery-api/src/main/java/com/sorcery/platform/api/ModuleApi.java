@@ -44,8 +44,6 @@ public class ModuleApi {
     @GetMapping("/module/{moduleId}")
     public JsonResponse<Modules> getModuleInfoById(@PathVariable Long moduleId) {
         log.info("根据模块id查询项目信息，模块id:{}", moduleId);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         Modules modules = moduleService.getModuleById(moduleId);
         return JsonResponse.success(modules);
     }
@@ -54,8 +52,6 @@ public class ModuleApi {
     @GetMapping("/module/name/{moduleName}")
     public JsonResponse<Modules> getModuleInfoByName(@PathVariable String moduleName) {
         log.info("根据模块名称查询模块信息，模块名称:{}", moduleName);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         Modules modules = moduleService.getModuleByName(moduleName);
         return JsonResponse.success(modules);
     }
@@ -82,10 +78,9 @@ public class ModuleApi {
     @ApiOperation(value = "删除模块信息")
     @DeleteMapping("/module/{moduleId}")
     public JsonResponse<String> deleteProject(@PathVariable Long moduleId) {
-        // 预留
         Long currentUserId = userSupport.getCurrentUserId();
         log.info("删除模块Id{}", moduleId);
-        moduleService.deleteModule(moduleId);
+        moduleService.deleteModule(moduleId, currentUserId);
         return JsonResponse.success();
     }
 

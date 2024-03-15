@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import JenkinsDialog from '@/components/Jenkins/jenkinsDialog'
+import JenkinsDialog from '@/views/jenkins/components/jenkinsDialog.vue'
 import { jenkinsList, deleteJenkinsInfo } from '@/api/jenkins'
 
 export default {

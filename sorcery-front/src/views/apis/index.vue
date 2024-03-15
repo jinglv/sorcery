@@ -63,10 +63,10 @@
           style="width: 100%"
         >
           <el-table-column prop="id" label="用例ID" width="100" />
-          <el-table-column prop="apiName" label="用例名称" width="180" />
-          <el-table-column prop="method" label="请求方法" width="100" />
-          <el-table-column prop="apiPath" label="API Path" width="180" />
-          <el-table-column prop="createTime" label="创建时间" width="180" />
+          <el-table-column prop="apiName" label="用例名称" width="auto" />
+          <el-table-column prop="method" label="请求方法" width="auto" />
+          <el-table-column prop="apiPath" label="API Path" width="auto" />
+          <el-table-column prop="createTime" label="创建时间" width="auto" />
           <el-table-column fixed="right" label="操作">
             <template slot-scope="scope">
               <el-button
@@ -108,7 +108,7 @@
   </div>
 </template>
 <script>
-import ModuleDialog from '@/components/Apis/moduleDialog.vue'
+import ModuleDialog from '@/views/apis/components/moduleDialog.vue'
 import { projectAllList } from '@/api/projects'
 import { apiListByModuleId, deleteApiInfo } from '@/api/apis'
 import { getModuleTree, deleteModule } from '@/api/modules'

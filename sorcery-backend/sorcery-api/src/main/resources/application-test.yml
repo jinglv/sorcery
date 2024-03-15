@@ -7,9 +7,9 @@ spring:
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.140.112.109:3306/sorcery?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/sorcery?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: 123123
+    password: 123456
   # 上传文件总的最大值
   servlet:
     multipart:
@@ -21,7 +21,6 @@ spring:
 logging:
   level:
     com.sorcery.platform.dao: DEBUG
-
 
 knife4j:
   # 是否开启加强模式 true开启  false关闭

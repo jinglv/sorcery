@@ -47,11 +47,11 @@
         style="width: 100%"
       >
         <el-table-column prop="id" label="ID" width="100" />
-        <el-table-column prop="jenkinsTaskName" label="Jenkins任务名称" width="200" />
-        <el-table-column prop="jenkinsName" label="Jenkins名称" width="200" />
-        <el-table-column prop="jenkinsJobName" label="Jenkins Job名称" width="200" />
-        <el-table-column prop="remark" label="备注" width="200" />
-        <el-table-column prop="createTime" label="创建时间" width="200" />
+        <el-table-column prop="jenkinsTaskName" label="Jenkins任务名称" width="auto" />
+        <el-table-column prop="jenkinsName" label="Jenkins名称" width="auto" />
+        <el-table-column prop="jenkinsJobName" label="Jenkins Job名称" width="auto" />
+        <el-table-column prop="remark" label="备注" width="auto" />
+        <el-table-column prop="createTime" label="创建时间" width="auto" />
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button
@@ -96,7 +96,7 @@
 
 <script>
 import { getJenkinsInfoAll, jenkinsTaskList, deleteJenkinsInfo } from '@/api/jenkins'
-import JenkinsTaskDialog from '@/components/Jenkins/jenkinsTaskDialog.vue'
+import JenkinsTaskDialog from '@/views/jenkins/components/jenkinsTaskDialog.vue'
 
 export default {
   name: 'JeninsInfo',

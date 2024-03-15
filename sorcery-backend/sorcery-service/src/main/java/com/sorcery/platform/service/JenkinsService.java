@@ -62,8 +62,9 @@ public interface JenkinsService {
      * 删除Jenkins信息
      *
      * @param jenkinsId Jenkins id
+     * @param userId    删除人
      */
-    void deleteJenkins(Long jenkinsId);
+    void deleteJenkins(Long jenkinsId, Long userId);
 
     /**
      * 查询所有Jenkins信息

@@ -7,6 +7,7 @@ import com.sorcery.platform.domain.JsonResponse;
 import com.sorcery.platform.domain.PageResult;
 import com.sorcery.platform.service.ApiExtractService;
 import com.sorcery.platform.support.UserSupport;
+import com.sorcery.platform.support.UserToken;
 import com.sorcery.platform.vo.apis.ApiExtractExecuteVO;
 import com.sorcery.platform.vo.apis.ApiExtractVO;
 import io.swagger.annotations.Api;
@@ -23,6 +24,7 @@ import java.util.Objects;
  * @date 2023/5/10 11:23
  */
 @Slf4j
+@UserToken
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
@@ -47,8 +49,6 @@ public class ApiExtractApi {
     @GetMapping("/extract/{apiExtractId}")
     public JsonResponse<ApiExtract> getApiExtractInfoById(@PathVariable Long apiExtractId) {
         log.info("根据接口断言Id查询接口信息，ApiExtract Id:{}", apiExtractId);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         ApiExtract apiExtract = apiExtractService.getApiExtractById(apiExtractId);
         return JsonResponse.success(apiExtract);
     }
@@ -57,8 +57,6 @@ public class ApiExtractApi {
     @GetMapping("/extract/name/{apiExtractName}")
     public JsonResponse<ApiExtract> getApiExtractByName(@PathVariable String apiExtractName) {
         log.info("根据ApiExtract名称查询Jenkins信息，ApiExtract Name:{}", apiExtractName);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         ApiExtract apiExtract = apiExtractService.getApiExtractByName(apiExtractName);
         return JsonResponse.success(apiExtract);
     }
@@ -92,7 +90,7 @@ public class ApiExtractApi {
         // 预留
         Long currentUserId = userSupport.getCurrentUserId();
         log.info("删除接口断言信息：{}", apiExtractId);
-        apiExtractService.deleteApiExtract(apiExtractId);
+        apiExtractService.deleteApiExtract(apiExtractId, currentUserId);
         return JsonResponse.success();
     }
 

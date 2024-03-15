@@ -104,9 +104,15 @@ public class JenkinsServiceImpl implements JenkinsService {
         Assert.isFalse(result != 1, "Jenkins信息更新失败!");
     }
 
+    /**
+     * 删除Jenkins信息
+     *
+     * @param jenkinsId Jenkins id
+     * @param userId    删除人
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteJenkins(Long jenkinsId) {
+    public void deleteJenkins(Long jenkinsId, Long userId) {
         // 根据Jenkins id查询项目信息
         JenkinsInfo jenkinsInfo = this.getJenkinsInfoById(jenkinsId);
         if (jenkinsInfo == null) {
@@ -114,6 +120,7 @@ public class JenkinsServiceImpl implements JenkinsService {
         }
         jenkinsInfo.setIsDelete(Constants.DEL_FLAG_ONE);
         jenkinsInfo.setUpdateTime(LocalDateTime.now());
+        jenkinsInfo.setUserId(userId);
         Integer result = jenkinsDAO.updateJenkinsInfo(jenkinsId, jenkinsInfo);
         Assert.isFalse(result != 1, "删除Jenkins信息失败!");
     }

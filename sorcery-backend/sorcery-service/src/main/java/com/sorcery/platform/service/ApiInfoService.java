@@ -2,6 +2,7 @@ package com.sorcery.platform.service;
 
 import com.sorcery.platform.domain.ApiInfo;
 import com.sorcery.platform.domain.PageResult;
+import com.sorcery.platform.domain.ResponseInfo;
 import com.sorcery.platform.vo.apis.ApiInfoSearchVO;
 import com.sorcery.platform.vo.apis.ApiInfoVO;
 import com.sorcery.platform.vo.apis.ApiRunVO;
@@ -60,8 +61,9 @@ public interface ApiInfoService {
      * 删除接口信息
      *
      * @param apiInfoId 接口 id
+     * @param userId    删除人
      */
-    void deleteApiInfo(Long apiInfoId);
+    void deleteApiInfo(Long apiInfoId, Long userId);
 
     /**
      * 接口执行
@@ -69,5 +71,5 @@ public interface ApiInfoService {
      * @param apiRunVO 执行接口信息
      * @return response
      */
-    String run(ApiRunVO apiRunVO);
+    ResponseInfo run(ApiRunVO apiRunVO);
 }

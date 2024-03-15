@@ -47,8 +47,9 @@ public interface ModuleService {
      * 删除模块
      *
      * @param moduleId 模块id
+     * @param userId   删除人
      */
-    void deleteModule(Long moduleId);
+    void deleteModule(Long moduleId, Long userId);
 
     /**
      * 获取指定项目下的树形模块

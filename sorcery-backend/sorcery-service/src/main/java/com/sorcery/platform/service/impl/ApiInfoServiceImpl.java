@@ -9,6 +9,7 @@ import com.sorcery.platform.constant.Constants;
 import com.sorcery.platform.dao.ApiInfoDAO;
 import com.sorcery.platform.domain.ApiInfo;
 import com.sorcery.platform.domain.PageResult;
+import com.sorcery.platform.domain.ResponseInfo;
 import com.sorcery.platform.exception.ConditionException;
 import com.sorcery.platform.service.ApiInfoService;
 import com.sorcery.platform.utils.JsonUtil;
@@ -16,6 +17,7 @@ import com.sorcery.platform.vo.apis.ApiInfoSearchVO;
 import com.sorcery.platform.vo.apis.ApiInfoVO;
 import com.sorcery.platform.vo.apis.ApiRunVO;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static io.restassured.RestAssured.given;
 
@@ -117,9 +116,15 @@ public class ApiInfoServiceImpl implements ApiInfoService {
         Assert.isFalse(result != 1, "接口信息更新失败!");
     }
 
+    /**
+     * 删除接口信息
+     *
+     * @param apiInfoId 接口 id
+     * @param userId    删除人
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteApiInfo(Long apiInfoId) {
+    public void deleteApiInfo(Long apiInfoId, Long userId) {
         // 根据Jenkins id查询项目信息
         ApiInfo apiInfo = this.getApiInfoById(apiInfoId);
         if (apiInfo == null) {
@@ -127,12 +132,13 @@ public class ApiInfoServiceImpl implements ApiInfoService {
         }
         apiInfo.setIsDelete(Constants.DEL_FLAG_ONE);
         apiInfo.setUpdateTime(LocalDateTime.now());
+        apiInfo.setUserId(userId);
         Integer result = apiInfoDAO.updateApiInfo(apiInfoId, apiInfo);
         Assert.isFalse(result != 1, "删除接口信息失败!");
     }
 
     @Override
-    public String run(ApiRunVO apiRunVO) {
+    public ResponseInfo run(ApiRunVO apiRunVO) {
         // 设置模板请求url
         RestAssured.baseURI = apiRunVO.getUrl();
         RequestSpecification requestSpecification = given();
@@ -155,6 +161,15 @@ public class ApiInfoServiceImpl implements ApiInfoService {
             requestSpecification.body(body);
         }
         // 将拼装好的接口进行请求
-        return requestSpecification.request(apiRunVO.getMethod(), apiRunVO.getApiPath()).then().extract().response().asString();
+        Response response = requestSpecification.request(apiRunVO.getMethod(), apiRunVO.getApiPath()).then().extract().response();
+
+        List<String> resHeaders = Arrays.asList(response.headers().toString().trim().split("\\n"));
+
+        ResponseInfo responseInfo = new ResponseInfo();
+        responseInfo.setStatusCode(String.valueOf(response.statusCode()));
+        responseInfo.setResponseTime(response.getTime());
+        responseInfo.setHeaders(resHeaders);
+        responseInfo.setBody(JsonUtil.jsonToMap(response.asString()));
+        return responseInfo;
     }
 }

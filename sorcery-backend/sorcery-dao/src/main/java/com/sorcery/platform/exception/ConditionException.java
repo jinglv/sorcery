@@ -2,11 +2,13 @@ package com.sorcery.platform.exception;
 
 import com.sorcery.platform.enums.ApiCodeEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author jinglv
  * @date 2022/8/31 17:50
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ConditionException extends RuntimeException {
 

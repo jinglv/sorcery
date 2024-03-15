@@ -46,8 +46,6 @@ public class JenkinsApi {
     @GetMapping("/jenkins/{jenkinsId}")
     public JsonResponse<JenkinsInfo> getJenkinsInfoById(@PathVariable Long jenkinsId) {
         log.info("根据Jenkins Id查询Jenkins信息，Jenkins Id:{}", jenkinsId);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         JenkinsInfo jenkinsInfo = jenkinsService.getJenkinsInfoById(jenkinsId);
         return JsonResponse.success(jenkinsInfo);
     }
@@ -56,8 +54,6 @@ public class JenkinsApi {
     @GetMapping("/jenkins/name/{jenkinsName}")
     public JsonResponse<JenkinsInfo> getProjectInfoByName(@PathVariable String jenkinsName) {
         log.info("根据Jenkins名称查询Jenkins信息，Jenkins Name:{}", jenkinsName);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         JenkinsInfo jenkinsInfo = jenkinsService.getJenkinsInfoByName(jenkinsName);
         return JsonResponse.success(jenkinsInfo);
     }
@@ -69,7 +65,6 @@ public class JenkinsApi {
         if (Objects.isNull(jenkinsInfoSearchVO)) {
             return JsonResponse.fail();
         }
-        Long userId = userSupport.getCurrentUserId();
         PageResult<JenkinsInfo> jenkinsPageResult = jenkinsService.pageJenkinsInfoList(pageNum, pageSize, jenkinsInfoSearchVO);
         return JsonResponse.success(jenkinsPageResult);
     }
@@ -88,10 +83,9 @@ public class JenkinsApi {
     @ApiOperation(value = "删除Jenkins信息")
     @DeleteMapping("/jenkins/{jenkinsId}")
     public JsonResponse<String> deleteJenkins(@PathVariable Long jenkinsId) {
-        // 预留
         Long currentUserId = userSupport.getCurrentUserId();
         log.info("删除JenkinsId{}", jenkinsId);
-        jenkinsService.deleteJenkins(jenkinsId);
+        jenkinsService.deleteJenkins(jenkinsId, currentUserId);
         return JsonResponse.success();
     }
 

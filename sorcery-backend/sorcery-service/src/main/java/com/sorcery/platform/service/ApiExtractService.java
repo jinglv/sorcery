@@ -58,8 +58,9 @@ public interface ApiExtractService {
      * 删除接口信息
      *
      * @param apiExtractId 接口断言信息主键id
+     * @param userId       删除人
      */
-    void deleteApiExtract(Long apiExtractId);
+    void deleteApiExtract(Long apiExtractId, Long userId);
 
     /**
      * 断言表达式提取结果

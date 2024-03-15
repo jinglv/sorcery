@@ -47,8 +47,6 @@ public class ProjectApi {
     @GetMapping("/project/{projectId}")
     public JsonResponse<Project> getProjectInfoById(@PathVariable Long projectId) {
         log.info("根据项目id查询项目信息，项目id:{}", projectId);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         Project projectInfo = projectService.getProjectById(projectId);
         return JsonResponse.success(projectInfo);
     }
@@ -57,8 +55,6 @@ public class ProjectApi {
     @GetMapping("/project/name/{projectName}")
     public JsonResponse<Project> getProjectInfoByName(@PathVariable String projectName) {
         log.info("根据项目id查询项目信息，项目名称:{}", projectName);
-        // 预留，当前登录用户信息，便于后期做权限管理
-        Long userId = userSupport.getCurrentUserId();
         Project projectInfo = projectService.getProjectByName(projectName);
         return JsonResponse.success(projectInfo);
     }
@@ -70,7 +66,6 @@ public class ProjectApi {
         if (Objects.isNull(projectSearchVO)) {
             return JsonResponse.fail();
         }
-        Long userId = userSupport.getCurrentUserId();
         PageResult<Project> projectPageResult = projectService.pageProjectList(pageNum, pageSize, projectSearchVO);
         return JsonResponse.success(projectPageResult);
     }
@@ -92,7 +87,7 @@ public class ProjectApi {
         // 预留
         Long currentUserId = userSupport.getCurrentUserId();
         log.info("删除项目Id{}", projectId);
-        projectService.deleteProject(projectId);
+        projectService.deleteProject(projectId, currentUserId);
         return JsonResponse.success();
     }
 

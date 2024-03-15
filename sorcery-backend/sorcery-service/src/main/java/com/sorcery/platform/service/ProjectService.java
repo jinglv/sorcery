@@ -59,8 +59,9 @@ public interface ProjectService {
      * 删除项目
      *
      * @param projectId 项目id
+     * @param userId    删除人
      */
-    void deleteProject(Long projectId);
+    void deleteProject(Long projectId, Long userId);
 
     /**
      * 查询所有项目信息
