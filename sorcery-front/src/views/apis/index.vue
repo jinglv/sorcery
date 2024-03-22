@@ -17,7 +17,7 @@
           </el-select>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary" size="medium" @click="createCase()">创建接口</el-button>
+          <el-button type="primary" size="medium" @click="createApiInfo()">创建接口</el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary" size="medium" style="margin-left: 35px" @click="createEnv()">配置环境变量</el-button>
@@ -103,12 +103,22 @@
           :parent-obj="parentObj"
           @cancel="closeDialog"
         />
+        <!--接口请求信息-->
+        <el-drawer
+          :title="apiTitle"
+          :visible.sync="drawer"
+          direction="rtl"
+          size="75%"
+        >
+          <api-info-dialog v-if="drawer" :title="apiTitle" :mid="currentModule" @close="closeDrawer" />
+        </el-drawer>
       </div>
     </div>
   </div>
 </template>
 <script>
 import ModuleDialog from '@/views/apis/components/moduleDialog.vue'
+import ApiInfoDialog from '@/views/apis/components/apiInfoDialog.vue'
 import { projectAllList } from '@/api/projects'
 import { apiListByModuleId, deleteApiInfo } from '@/api/apis'
 import { getModuleTree, deleteModule } from '@/api/modules'
@@ -116,7 +126,8 @@ import { getModuleTree, deleteModule } from '@/api/modules'
 export default {
   name: 'ApisModule',
   components: {
-    ModuleDialog
+    ModuleDialog,
+    ApiInfoDialog
   },
   data() {
     return {
@@ -132,9 +143,9 @@ export default {
         apiName: ''
       },
       drawer: false,
-      caseTitle: '',
+      apiTitle: '',
       currentModule: 0, // 当前选中的模块
-      currentCase: 0, // 当前选中的用例
+      currentApi: 0, // 当前选中的接口信息
       dialogEnvsFlag: false,
       req: {
         pageNum: 1,
@@ -228,7 +239,7 @@ export default {
       this.currentModule = data.id
       this.getApiList(data.id)
     },
-    // 获取模块下的测试用例列表
+    // 获取模块下的接口列表
     async getApiList(mid) {
       const resp = await apiListByModuleId(mid, this.req, JSON.stringify(this.apiSearchFrom))
       if (resp.code === '00000') {
@@ -238,41 +249,41 @@ export default {
         this.$message.error('查询失败！')
       }
     },
-    // 创建测试用例
-    createCase() {
+    // 创建接口信息
+    createApiInfo() {
       if (this.currentModule === 0) {
         this.$message.warning('请选择模块!')
       } else {
-        this.currentCase = 0
+        this.currentApi = 0
         this.drawer = true
-        this.caseTitle = '创建接口'
+        this.apiTitle = '创建接口'
       }
     },
-    // 查看用例详情
+    // 查看接口信息详情
     caseRowApiInfo(row) {
-      // 点击用例，获取用例id
-      this.currentCase = row.id
+      // 点击接口，获取用例id
+      this.currentApi = row.id
       this.drawer = true
-      this.caseTitle = '接口详情'
+      this.apiTitle = '接口详情'
     },
-    // 编辑测试用例
+    // 编辑接口信息
     editRowApiInfo(row) {
       // 点击用例，获取用例id
-      this.currentCase = row.id
+      this.currentApi = row.id
       this.drawer = true
-      this.caseTitle = '编辑接口'
+      this.apiTitle = '编辑接口'
     },
-    // 删除测试用例
+    // 删除接口信息
     deleteRowApiInfo(row) {
       // 点击用例，获取用例id
-      this.currentCase = row.id
+      this.currentApi = row.id
       this.$confirm('删除接口, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
         center: true
       }).then(() => {
-        const resp = deleteApiInfo(this.currentCase)
+        const resp = deleteApiInfo(this.currentApi)
         if (resp.success === true) {
           this.getCaseList(this.currentModule)
         } else {
@@ -293,16 +304,17 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`)
       this.req.pageNum = val
-      this.getCaseList(this.currentModule)
+      this.getApiList(this.currentModule)
     },
     // 传递子组件，关闭抽屉
     closeDrawer() {
       this.drawer = false
+      this.getApiList(this.currentModule)
     },
     // 传递子组件，关闭抽屉，刷新列表
     refreshCaseList() {
       console.info('currentModule', this.currentModule)
-      this.getCaseList(this.currentModule)
+      this.getApiList(this.currentModule)
     },
     // 创建模块
     createEnv() {
@@ -322,11 +334,11 @@ export default {
 }
 .label-title {
   font-family: "Liberation Mono", monospace, serif, sans-serif;
-  font-size: 20px;
+  font-size: 25px;
 }
 .label-text {
   font-family: "Lucida Calligraphy", cursive, serif, sans-serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bolder;
   float: left;
   margin-top: 5px;

@@ -1,11 +1,9 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
-
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">用户登录</h3>
       </div>
-
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -47,7 +45,6 @@
         <span style="margin-right:20px;">username: admin</span>
         <span> password: admin</span>
       </div>
-
     </el-form>
   </div>
 </template>
@@ -81,7 +78,8 @@ export default {
       // },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      activeName: 'first'
     }
   },
   watch: {
@@ -102,6 +100,9 @@ export default {
       this.$nextTick(() => {
         this.$refs.password.focus()
       })
+    },
+    handleClick(tab, event) {
+      console.log(tab, event)
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
@@ -171,7 +172,7 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
+$bg:#1d5ea4;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 
